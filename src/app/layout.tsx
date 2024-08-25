@@ -1,9 +1,9 @@
+import { NavBar } from '@/components/NavBar';
+import { Providers } from '@/components/providers';
+import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 import { Roboto as FontSans } from 'next/font/google';
 import './globals.css';
-import { cn } from '@/lib/utils';
-import { ThemeProvider } from '@/components/providers/theme-provider';
-import { NavBar } from '@/components/NavBar';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -29,15 +29,10 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <Providers>
           <NavBar />
           {children}
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

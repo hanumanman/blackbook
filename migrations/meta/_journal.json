@@ -8,6 +8,13 @@
       "when": 1724084768058,
       "tag": "0000_acoustic_freak",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1724518751231,
+      "tag": "0001_known_human_torch",
+      "breakpoints": true
     }
   ]
 }

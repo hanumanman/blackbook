@@ -1,27 +1,19 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { useUploadNovels } from './mutations';
 
+//TODO: Send novel id along with the text content
 const Page = () => {
-  const [text, setText] = useState<string>('');
+  const [file, setFile] = useState<File>();
 
-  //React Dropzone setup
+  //Dropzone setup
   const onDropAccepted = useCallback((acceptedFiles: any[]) => {
-    acceptedFiles.forEach((file) => {
-      const reader = new FileReader();
-      reader.onabort = () => console.log('File reading was aborted');
-      reader.onerror = () => console.log('File reading has failed');
-      reader.onload = () => {
-        const textContent = reader.result;
-        setText(textContent as string);
-      };
-      reader.readAsText(file);
-    });
+    setFile(acceptedFiles[0]);
   }, []);
-  const { getRootProps, getInputProps, isDragActive, fileRejections, open } =
+  const { getRootProps, getInputProps, isDragActive, fileRejections } =
     useDropzone({
       onDropAccepted,
       maxFiles: 1,
@@ -29,6 +21,16 @@ const Page = () => {
         'text/plain': ['.txt'],
       },
     });
+
+  //Handle upload
+  const uploadNovels = useUploadNovels();
+  const handleUpload = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      uploadNovels.mutate(reader.result as string);
+    };
+    reader.readAsText(file);
+  };
 
   return (
     <div className="flex flex-col p-24 gap-4 items-center">
@@ -44,7 +46,6 @@ const Page = () => {
             <p>
               Drag &apos;n&apos; drop some files here, or click to select files
             </p>
-            <Button onClick={open}>Upload File</Button>
           </>
         )}
       </div>
@@ -53,13 +54,12 @@ const Page = () => {
           {fileRejections[0].errors[0].message}
         </p>
       )}
-      <p>Or</p>
-      <p>Input here</p>
-      <Textarea
-        className="h-48"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
+      {!!file && (
+        <div>
+          <p>File uploaded: {file.name}</p>
+          <Button onClick={() => handleUpload(file)}>Upload</Button>
+        </div>
+      )}
     </div>
   );
 };
