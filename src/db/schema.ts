@@ -4,7 +4,7 @@ export const chaptersTable = sqliteTable('chapters', {
   id: integer('id').primaryKey(),
   chapter_name: text('chapter_name').notNull(),
   chapter_content: text('chapter_content').notNull(),
-  novel_name: text('novel_name').notNull(),
+  novel_id: integer('novel_id').notNull(),
   chapter_number: integer('chapter_number').notNull(),
 });
 
@@ -17,8 +17,8 @@ export const novelsTable = sqliteTable('novels', {
   novel_image_link: text('novel_image_link'),
 });
 
-export type InsertChapter = typeof chaptersTable.$inferInsert;
-export type InsertNovel = typeof novelsTable.$inferInsert;
+export type TInsertChapter = typeof chaptersTable.$inferInsert;
+export type TInsertNovel = typeof novelsTable.$inferInsert;
 
-export type SelectChapter = typeof chaptersTable.$inferSelect;
-export type SelectNovel = typeof novelsTable.$inferSelect;
+export type TSelectChapter = typeof chaptersTable.$inferSelect;
+export type TSelectNovel = typeof novelsTable.$inferSelect;
