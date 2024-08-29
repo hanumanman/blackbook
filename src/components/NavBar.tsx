@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ModeToggle } from './ModeToggler';
 import Image from 'next/image';
 import LogoImage from '@/lib/images/logo.png';
+import { LocaleSwitcher } from './LocaleSwitcher';
 
 const links = [{ name: 'Upload', path: '/upload' }];
 
@@ -27,7 +28,8 @@ export const NavBar = () => {
           {link.name}
         </Link>
       ))} */}
-      <div className="ml-auto">
+      <div className="ml-auto flex gap-2">
+        <LocaleSwitcher />
         <ModeToggle />
       </div>
     </div>
