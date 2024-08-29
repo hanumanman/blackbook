@@ -7,11 +7,18 @@ const links = [{ name: 'Upload', path: '/upload' }];
 
 export const NavBar = () => {
   return (
-    <div className="p-8 w-full border-b border-primary flex gap-4 items-center divide-x">
-      <Link className="mr-8" href={'/'}>
-        <Image src={LogoImage} alt="logo" width={50} height={50} />
+    <div className="p-8 w-full border-b border-primary flex gap-4 items-center">
+      <Link className="mr-8 flex gap-4 items-center" href={'/'}>
+        <Image
+          src={LogoImage}
+          alt="logo"
+          width={50}
+          height={50}
+          className="rounded-md"
+        />
+        <p className="font-bold text-2xl">Blackbook</p>
       </Link>
-      {links.map((link) => (
+      {/* {links.map((link) => (
         <Link
           key={link.name}
           href={link.path}
@@ -19,7 +26,7 @@ export const NavBar = () => {
         >
           {link.name}
         </Link>
-      ))}
+      ))} */}
       <div className="ml-auto">
         <ModeToggle />
       </div>
