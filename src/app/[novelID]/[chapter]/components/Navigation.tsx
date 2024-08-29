@@ -1,5 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
 
 export const Navigation = ({
@@ -18,6 +19,7 @@ export const Navigation = ({
   return (
     <div className="flex gap-4 w-full justify-center items-center">
       <Button onClick={() => handleNavigation('prev')}>Prev</Button>
+      <Input className="w-16 border-2" />
       <Button onClick={() => handleNavigation('next')}>Next</Button>
     </div>
   );
