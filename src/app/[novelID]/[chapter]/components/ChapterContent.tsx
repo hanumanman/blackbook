@@ -14,7 +14,7 @@ export const ChapterContent = async (props: Props) => {
   const data = chapterData[0];
   const t = await getTranslations('common');
   return (
-    <div className="flex flex-col items-center gap-3 pt-3">
+    <div className="flex flex-col items-center gap-3 py-3">
       <p className="text-xl font-bold">
         {t('Chapter')} {data.chapter_number}
       </p>
