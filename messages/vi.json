@@ -1,9 +1,16 @@
 {
   "common": {
     "Chapter": "Chương",
-    "Next": "Chương tiếp",
-    "Prev": "Chương trước",
     "English": "Tiếng Anh",
     "Vietnamese": "Tiếng Việt"
+  },
+  "utility": {
+    "Next": "Chương tiếp",
+    "Prev": "Chương trước",
+    "Go to chapter": "Đi đến chương",
+    "Select chapter": "Chọn chương",
+    "Set font size": "Đặt kích thước font",
+    "Set line height": "Đặt khoảng cách dòng",
+    "Save": "Lưu"
   }
 }

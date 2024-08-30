@@ -1,7 +1,6 @@
-import { Suspense } from 'react';
-import { ChapterContent } from './components/ChapterContent';
-import { Navigation } from './components/Navigation';
 import { Spinner } from '@/components/Spinner';
+import { Suspense } from 'react';
+import { ChapterDetails } from './components/ChapterDetails';
 
 const ChapterPage = async ({
   params,
@@ -11,19 +10,10 @@ const ChapterPage = async ({
   const { novelID, chapter } = params;
 
   return (
-    <div className="min-h-[100vh] p-12 flex flex-col justify-between text-lg">
-      <Navigation
-        chapterNumber={parseInt(chapter)}
-        novelID={parseInt(novelID)}
-      />
+    <div className="min-h-[100vh] p-6 md:p-12 lg:p-16 flex flex-col justify-between text-lg">
       <Suspense fallback={<Spinner />}>
-        <ChapterContent novelID={novelID} chapter={chapter} />
+        <ChapterDetails novelID={novelID} chapter={chapter} />
       </Suspense>
-
-      <Navigation
-        chapterNumber={parseInt(chapter)}
-        novelID={parseInt(novelID)}
-      />
     </div>
   );
 };

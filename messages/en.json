@@ -1,9 +1,16 @@
 {
   "common": {
     "Chapter": "Chapter",
-    "Next": "Next",
-    "Prev": "Prev",
     "English": "English",
     "Vietnamese": "Vietnamese"
+  },
+  "utility": {
+    "Next": "Next",
+    "Prev": "Prev",
+    "Go to chapter": "Go to chapter",
+    "Select chapter": "Select chapter",
+    "Set font size": "Set font size",
+    "Set line height": "Set line height",
+    "Save": "Save"
   }
 }

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ModeToggle } from './ModeToggler';
 import Image from 'next/image';
-import LogoImage from '@/lib/images/logo.png';
+import LogoImage from '@/lib/images/logo.webp';
 import { LocaleSwitcher } from './LocaleSwitcher';
 
 const links = [{ name: 'Upload', path: '/upload' }];
