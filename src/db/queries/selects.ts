@@ -13,7 +13,7 @@ export async function getChapter({
   novelID: number;
   chapter: number;
 }) {
-  return await db
+  const res = await db
     .select()
     .from(chaptersTable)
     .where(
@@ -21,8 +21,11 @@ export async function getChapter({
         eq(chaptersTable.novel_id, novelID),
         eq(chaptersTable.chapter_number, chapter)
       )
-    );
+    )
+    .limit(1);
+  return res[0];
 }
 
 export type TNovels = Awaited<ReturnType<typeof getAllNovels>>;
 export type TNovel = TNovels[0];
+export type TChapter = Awaited<ReturnType<typeof getChapter>>;
