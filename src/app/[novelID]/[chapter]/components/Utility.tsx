@@ -13,7 +13,6 @@ import { DialogTrigger } from '@radix-ui/react-dialog';
 import { Menu, Settings, Triangle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 export const Utility = ({
@@ -58,8 +57,8 @@ export const Utility = ({
   const t = useTranslations('utility');
   return (
     <div className="flex gap-4 w-full justify-between items-center">
-      <Link href={`/${novelID}/${chapterNumber - 1}`} prefetch>
-        <Button>
+      <Link href={`/${novelID}/${chapterNumber - 1}`}>
+        <Button aria-label="Open prev chapter">
           <Triangle size={14} className="-rotate-90" />
         </Button>
       </Link>
@@ -150,26 +149,17 @@ export const Utility = ({
                 Reset
               </Button>
               <DialogClose asChild>
-                <Button>{t('Save')}</Button>
+                <Button aria-label="Save settings">{t('Save')}</Button>
               </DialogClose>
             </div>
           </DialogContent>
         </Dialog>
       </div>
-      <Link href={`/${novelID}/${chapterNumber + 1}`}>
+      <Link prefetch href={`/${novelID}/${chapterNumber + 1}`}>
         <Button aria-label="Go to next chapter">
           <Triangle size={14} className="rotate-90" />
         </Button>
       </Link>
-
-      {/* {[2, 3, 4].map(offset => (
-        <Link 
-          key={offset}
-          href={`/${novelID}/${chapterNumber + offset}`} 
-          prefetch
-          style={{ display: 'none' }}
-        />
-      ))} */}
     </div>
   );
 };
