@@ -33,7 +33,7 @@ export const Utility = ({
   setLineHeight: Dispatch<SetStateAction<number>>;
 }) => {
   const [input, setInput] = useState('');
-  // const { push } = useRouter();
+  const router = useRouter();
 
   function handleNavigation(direction: 'prev' | 'next') {
     const newChapter =
@@ -51,6 +51,12 @@ export const Utility = ({
       setLineHeight(Number(localLineHeight));
     }
   }, [setFontSize, setLineHeight]);
+
+  useEffect(() => {
+    for (let i = 1; i <= 3; i++) {
+      router.prefetch(`/${novelID}/${chapterNumber + i}`);
+    }
+  }, [chapterNumber, novelID, router]);
 
   const t = useTranslations('utility');
   return (
@@ -156,6 +162,15 @@ export const Utility = ({
           <Triangle size={14} className="rotate-90" />
         </Button>
       </Link>
+
+      {[2, 3, 4].map(offset => (
+        <Link 
+          key={offset}
+          href={`/${novelID}/${chapterNumber + offset}`} 
+          prefetch
+          style={{ display: 'none' }}
+        />
+      ))}
     </div>
   );
 };
