@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { DialogTrigger } from '@radix-ui/react-dialog';
-import { Menu, Settings, Triangle } from 'lucide-react';
+import { Menu, Settings, Triangle } from 'lucide-react'; 
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -55,7 +55,7 @@ export const Utility = ({
   const t = useTranslations('utility');
   return (
     <div className="flex gap-4 w-full justify-between items-center">
-      <Link href={`/${novelID}/${chapterNumber - 1}`}>
+      <Link href={`/${novelID}/${chapterNumber - 1}`} prefetch>
         <Button>
           <Triangle size={14} className="-rotate-90" />
         </Button>
@@ -78,7 +78,7 @@ export const Utility = ({
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
-            <Link href={`/${novelID}/${input}`}>
+            <Link href={`/${novelID}/${input}`} prefetch>
               <Button>{t('Go to chapter')}</Button>
             </Link>
           </DialogContent>
@@ -151,7 +151,7 @@ export const Utility = ({
           </DialogContent>
         </Dialog>
       </div>
-      <Link href={`/${novelID}/${chapterNumber + 1}`}>
+      <Link href={`/${novelID}/${chapterNumber + 1}`} prefetch>
         <Button>
           <Triangle size={14} className="rotate-90" />
         </Button>
