@@ -10,12 +10,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { DialogTrigger } from '@radix-ui/react-dialog';
-import { Menu, Settings, Triangle } from 'lucide-react'; 
+import { Menu, Settings, Triangle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { set } from 'react-hook-form';
-import Link from 'next/link';
 
 export const Utility = ({
   chapterNumber,
@@ -33,13 +32,13 @@ export const Utility = ({
   setLineHeight: Dispatch<SetStateAction<number>>;
 }) => {
   const [input, setInput] = useState('');
-  const router = useRouter();
+  // const router = useRouter();
 
-  function handleNavigation(direction: 'prev' | 'next') {
-    const newChapter =
-      direction === 'prev' ? chapterNumber - 1 : chapterNumber + 1;
-    // push(`/${novelID}/${newChapter}`);
-  }
+  // function handleNavigation(direction: 'prev' | 'next') {
+  //   const newChapter =
+  //     direction === 'prev' ? chapterNumber - 1 : chapterNumber + 1;
+  //   push(`/${novelID}/${newChapter}`);
+  // }
 
   useEffect(() => {
     const localFontSize = localStorage.getItem('fontSize');
@@ -52,11 +51,9 @@ export const Utility = ({
     }
   }, [setFontSize, setLineHeight]);
 
-  useEffect(() => {
-    for (let i = 1; i <= 3; i++) {
-      router.prefetch(`/${novelID}/${chapterNumber + i}`);
-    }
-  }, [chapterNumber, novelID, router]);
+  // useEffect(() => {
+  //   router.prefetch(`/${novelID}/${chapterNumber + 1}`);
+  // }, [chapterNumber, novelID, router]);
 
   const t = useTranslations('utility');
   return (
@@ -71,7 +68,7 @@ export const Utility = ({
         {/* Navigation input */}
         <Dialog>
           <DialogTrigger asChild>
-            <Button>
+            <Button aria-label="Open page navigation dialog">
               <Menu size={18} />
             </Button>
           </DialogTrigger>
@@ -84,8 +81,10 @@ export const Utility = ({
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
-            <Link href={`/${novelID}/${input}`} prefetch>
-              <Button>{t('Go to chapter')}</Button>
+            <Link href={`/${novelID}/${input}`}>
+              <Button aria-label="Go to next chapter">
+                {t('Go to chapter')}
+              </Button>
             </Link>
           </DialogContent>
         </Dialog>
@@ -100,7 +99,7 @@ export const Utility = ({
           }}
         >
           <DialogTrigger asChild>
-            <Button>
+            <Button aria-label="Open page settings">
               <Settings size={18} />
             </Button>
           </DialogTrigger>
@@ -157,20 +156,20 @@ export const Utility = ({
           </DialogContent>
         </Dialog>
       </div>
-      <Link href={`/${novelID}/${chapterNumber + 1}`} prefetch>
-        <Button>
+      <Link href={`/${novelID}/${chapterNumber + 1}`}>
+        <Button aria-label="Go to next chapter">
           <Triangle size={14} className="rotate-90" />
         </Button>
       </Link>
 
-      {[2, 3, 4].map(offset => (
+      {/* {[2, 3, 4].map(offset => (
         <Link 
           key={offset}
           href={`/${novelID}/${chapterNumber + offset}`} 
           prefetch
           style={{ display: 'none' }}
         />
-      ))}
+      ))} */}
     </div>
   );
 };
