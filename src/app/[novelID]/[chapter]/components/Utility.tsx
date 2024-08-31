@@ -15,6 +15,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { set } from 'react-hook-form';
+import Link from 'next/link';
 
 export const Utility = ({
   chapterNumber,
@@ -32,12 +33,12 @@ export const Utility = ({
   setLineHeight: Dispatch<SetStateAction<number>>;
 }) => {
   const [input, setInput] = useState('');
-  const { push } = useRouter();
+  // const { push } = useRouter();
 
   function handleNavigation(direction: 'prev' | 'next') {
     const newChapter =
       direction === 'prev' ? chapterNumber - 1 : chapterNumber + 1;
-    push(`/${novelID}/${newChapter}`);
+    // push(`/${novelID}/${newChapter}`);
   }
 
   useEffect(() => {
@@ -54,9 +55,11 @@ export const Utility = ({
   const t = useTranslations('utility');
   return (
     <div className="flex gap-4 w-full justify-between items-center">
-      <Button onClick={() => handleNavigation('prev')}>
-        <Triangle size={14} className="-rotate-90" />
-      </Button>
+      <Link href={`/${novelID}/${chapterNumber - 1}`}>
+        <Button>
+          <Triangle size={14} className="-rotate-90" />
+        </Button>
+      </Link>
 
       <div className="flex gap-4">
         {/* Navigation input */}
@@ -75,15 +78,15 @@ export const Utility = ({
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
-            <Button onClick={() => push(`/${novelID}/${input}`)}>
-              {t('Go to chapter')}
-            </Button>
+            <Link href={`/${novelID}/${input}`}>
+              <Button>{t('Go to chapter')}</Button>
+            </Link>
           </DialogContent>
         </Dialog>
 
         {/* Page settings */}
         <Dialog
-          onOpenChange={(value) => {
+          onOpenChange={(value: boolean) => {
             if (!value) {
               localStorage.setItem('fontSize', String(fontSize));
               localStorage.setItem('lineHeight', String(lineHeight));
@@ -102,7 +105,7 @@ export const Utility = ({
             <div className="flex gap-2">
               <Slider
                 value={[fontSize]}
-                onValueChange={(value) => setFontSize(value[0])}
+                onValueChange={(value: number[]) => setFontSize(value[0])}
                 max={48}
                 step={1}
               />
@@ -112,7 +115,7 @@ export const Utility = ({
             <div className="flex gap-2">
               <Slider
                 value={[lineHeight]}
-                onValueChange={(value) => setLineHeight(value[0])}
+                onValueChange={(value: number[]) => setLineHeight(value[0])}
                 max={4}
                 step={0.1}
               />
@@ -148,9 +151,11 @@ export const Utility = ({
           </DialogContent>
         </Dialog>
       </div>
-      <Button onClick={() => handleNavigation('next')}>
-        <Triangle size={14} className="rotate-90" />
-      </Button>
+      <Link href={`/${novelID}/${chapterNumber + 1}`}>
+        <Button>
+          <Triangle size={14} className="rotate-90" />
+        </Button>
+      </Link>
     </div>
   );
 };
