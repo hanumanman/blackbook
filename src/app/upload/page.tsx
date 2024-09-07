@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/button';
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useUploadNovels } from './mutations';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 
-//TODO: Send novel id along with the text content
 const Page = () => {
   const [file, setFile] = useState<File>();
+  const [novelID, setNovelID] = useState<string>('');
 
   //Dropzone setup
   const onDropAccepted = useCallback((acceptedFiles: any[]) => {
@@ -24,16 +26,28 @@ const Page = () => {
 
   //Handle upload
   const uploadNovels = useUploadNovels();
-  const handleUpload = (file: File) => {
+  const handleUpload = ({ file, novelID }: { file: File; novelID: number }) => {
     const reader = new FileReader();
     reader.onload = () => {
-      uploadNovels.mutate(reader.result as string);
+      uploadNovels.mutate({
+        textContent: reader.result as string,
+        novelID,
+      });
     };
     reader.readAsText(file);
   };
 
   return (
     <div className="flex flex-col p-24 gap-4 items-center">
+      <div className="flex gap-3 w-fit items-center">
+        <Label className="whitespace-nowrap text-xl">Novel ID</Label>
+        <Input
+          value={novelID}
+          onChange={(e) => setNovelID(e.target.value)}
+          type="number"
+        />
+      </div>
+
       <div
         {...getRootProps()}
         className="flex flex-col gap-4 justify-center items-center w-full border-dashed border-primary border-2 p-2 rounded-lg h-48"
@@ -57,7 +71,11 @@ const Page = () => {
       {!!file && (
         <div>
           <p>File uploaded: {file.name}</p>
-          <Button onClick={() => handleUpload(file)}>Upload</Button>
+          <Button
+            onClick={() => handleUpload({ file, novelID: Number(novelID) })}
+          >
+            Upload
+          </Button>
         </div>
       )}
     </div>
