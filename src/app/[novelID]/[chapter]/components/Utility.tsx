@@ -9,59 +9,79 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
+import { cn } from '@/lib/utils';
 import { DialogTrigger } from '@radix-ui/react-dialog';
 import { Menu, Settings, Triangle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-export const Utility = ({
-  chapterNumber,
-  novelID,
-  fontSize,
-  setFontSize,
-  lineHeight,
-  setLineHeight,
-}: {
-  chapterNumber: number;
-  novelID: number;
+export interface IPageSettings {
   fontSize: number;
   setFontSize: Dispatch<SetStateAction<number>>;
   lineHeight: number;
   setLineHeight: Dispatch<SetStateAction<number>>;
+  readMode: TReadMode;
+  setReadMode: Dispatch<SetStateAction<TReadMode>>;
+}
+
+export type TReadMode = 'single' | 'infinite';
+
+export const Utility = ({
+  chapterNumber,
+  novelID,
+  pageSettings,
+}: {
+  chapterNumber: number;
+  novelID: number;
+  pageSettings: IPageSettings;
 }) => {
   const [input, setInput] = useState('');
-  // const router = useRouter();
-
-  // function handleNavigation(direction: 'prev' | 'next') {
-  //   const newChapter =
-  //     direction === 'prev' ? chapterNumber - 1 : chapterNumber + 1;
-  //   push(`/${novelID}/${newChapter}`);
-  // }
+  const { push } = useRouter();
+  const {
+    fontSize,
+    lineHeight,
+    readMode,
+    setFontSize,
+    setLineHeight,
+    setReadMode,
+  } = pageSettings;
 
   useEffect(() => {
     const localFontSize = localStorage.getItem('fontSize');
     const localLineHeight = localStorage.getItem('lineHeight');
+    const localReadMode = localStorage.getItem('readMode');
+
     if (localFontSize) {
       setFontSize(Number(localFontSize));
     }
     if (localLineHeight) {
       setLineHeight(Number(localLineHeight));
     }
-  }, [setFontSize, setLineHeight]);
 
-  // useEffect(() => {
-  //   router.prefetch(`/${novelID}/${chapterNumber + 1}`);
-  // }, [chapterNumber, novelID, router]);
+    if (localReadMode) {
+      setReadMode(localReadMode as TReadMode);
+    }
+  }, [setFontSize, setLineHeight, setReadMode]);
 
   const t = useTranslations('utility');
+
+  const showNavigateButton = readMode === 'single';
   return (
-    <div className="flex gap-4 w-full justify-between items-center">
-      <Link href={`/${novelID}/${chapterNumber - 1}`}>
-        <Button aria-label="Open prev chapter">
-          <Triangle size={14} className="-rotate-90" />
-        </Button>
-      </Link>
+    <div
+      className={cn(
+        'flex gap-4 w-full items-center',
+        readMode === 'single' ? 'justify-between' : 'justify-center'
+      )}
+    >
+      {showNavigateButton && (
+        <Link href={`/${novelID}/${chapterNumber - 1}`}>
+          <Button>
+            <Triangle size={14} className="-rotate-90" />
+          </Button>
+        </Link>
+      )}
 
       <div className="flex gap-4">
         {/* Navigation input */}
@@ -79,9 +99,14 @@ export const Utility = ({
               type="number"
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  push(`/${novelID}/${input}`);
+                }
+              }}
             />
             <Link href={`/${novelID}/${input}`}>
-              <Button aria-label="Go to next chapter">
+              <Button aria-label="Go to selected chapter">
                 {t('Go to chapter')}
               </Button>
             </Link>
@@ -90,8 +115,9 @@ export const Utility = ({
 
         {/* Page settings */}
         <Dialog
-          onOpenChange={(value: boolean) => {
-            if (!value) {
+          onOpenChange={(open) => {
+            if (open === false) {
+              //on close
               localStorage.setItem('fontSize', String(fontSize));
               localStorage.setItem('lineHeight', String(lineHeight));
             }
@@ -139,7 +165,35 @@ export const Utility = ({
                 veritatis mollitia, rem itaque.
               </p>
             </div>
-            <div className="flex gap-2 w-full justify-center">
+            <div>
+              <p className="font-bold text-lg whitespace-nowrap mr-2 mb-4">
+                {t('Reading mode')}
+              </p>
+
+              <div className="flex gap-2 items-center">
+                <Button
+                  variant={readMode === 'single' ? 'default' : 'outline'}
+                  className="w-full"
+                  onClick={() => {
+                    localStorage.setItem('readMode', 'single');
+                    setReadMode('single');
+                  }}
+                >
+                  {t('Single page')}
+                </Button>
+                <Button
+                  variant={readMode === 'infinite' ? 'default' : 'outline'}
+                  className="w-full"
+                  onClick={() => {
+                    localStorage.setItem('readMode', 'infinite');
+                    setReadMode('infinite');
+                  }}
+                >
+                  {t('Infinite scroll')}
+                </Button>
+              </div>
+            </div>
+            <div className="flex gap-2 w-full justify-center pt-2">
               <Button
                 onClick={() => {
                   setFontSize(16);
@@ -155,11 +209,13 @@ export const Utility = ({
           </DialogContent>
         </Dialog>
       </div>
-      <Link prefetch href={`/${novelID}/${chapterNumber + 1}`}>
-        <Button aria-label="Go to next chapter">
-          <Triangle size={14} className="rotate-90" />
-        </Button>
-      </Link>
+      {showNavigateButton && (
+        <Link prefetch href={`/${novelID}/${chapterNumber + 1}`}>
+          <Button>
+            <Triangle size={14} className="rotate-90" />
+          </Button>
+        </Link>
+      )}
     </div>
   );
 };

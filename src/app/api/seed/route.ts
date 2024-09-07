@@ -1,16 +1,13 @@
 import { db } from '@/db';
 import { chaptersTable, TInsertChapter } from '@/db/schema';
 
-//TODO: Get novel_id from request
-const novel_id = 1;
-
 async function InsertChapter(chapter: TInsertChapter) {
   await db.insert(chaptersTable).values(chapter);
 }
 
 export async function POST(request: Request) {
-  const res: { textContent: string } = await request.json();
-  const { textContent: text } = res;
+  const res: { textContent: string; novelID: number } = await request.json();
+  const { textContent: text, novelID: novel_id } = res;
 
   //parsing text before saving to database
   const chapters = [];
