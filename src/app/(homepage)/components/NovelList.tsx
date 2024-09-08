@@ -3,11 +3,6 @@ import { NovelCard } from './NovelCard';
 import { customFetch as fetch } from '@/lib/utils';
 
 export async function NovelList() {
-  // const novels = await fetch({
-  //   url: '/get-novels',
-  //   cache: 'no-store',
-  // });
-
   const novels = await getAllNovels();
 
   return (
