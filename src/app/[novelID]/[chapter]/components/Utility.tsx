@@ -75,14 +75,11 @@ export const Utility = ({
         readMode === 'single' ? 'justify-between' : 'justify-center'
       )}
     >
-      {showNavigateButton && (
-        <Link href={`/${novelID}/${chapterNumber - 1}`}>
-          <Button>
-            <Triangle size={14} className="-rotate-90" />
-          </Button>
-        </Link>
-      )}
-
+      <Link href={`/${novelID}/${chapterNumber - 1}`}>
+        <Button>
+          <Triangle size={14} className="-rotate-90" />
+        </Button>
+      </Link>
       <div className="flex gap-4">
         {/* Navigation input */}
         <Dialog>
@@ -209,13 +206,16 @@ export const Utility = ({
           </DialogContent>
         </Dialog>
       </div>
-      {showNavigateButton && (
-        <Link prefetch href={`/${novelID}/${chapterNumber + 1}`}>
-          <Button>
-            <Triangle size={14} className="rotate-90" />
-          </Button>
-        </Link>
-      )}
+
+      <Link
+        className={cn(showNavigateButton ? 'visible' : 'invisible')}
+        prefetch
+        href={`/${novelID}/${chapterNumber + 1}`}
+      >
+        <Button>
+          <Triangle size={14} className="rotate-90" />
+        </Button>
+      </Link>
     </div>
   );
 };

@@ -1,10 +1,10 @@
 'use client';
+import { Button } from '@/components/ui/button';
 import { getChapter, TChapter } from '@/db/queries/selects';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { IPageSettings, TReadMode, Utility } from './Utility';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import { useInView } from 'react-intersection-observer';
 
 interface Props {
   novelID: string;
@@ -72,23 +72,36 @@ export const ChapterContent = ({ data, chapter, novelID }: Props) => {
       parseInt(chapter)
     );
 
-    async function fetchNextChapter() {
+    const fetchNextChapter = useCallback(async () => {
       const nextChapterData = await getChapter({
         novelID: parseInt(novelID),
         chapter: currentChapter + 1,
       });
       if (nextChapterData) {
         setCurrentChapter((prev) => prev + 1);
-        setChapterContents((prev) => [...prev, nextChapterData]);
+        setChapterContents((prev) => {
+          if (prev.length >= 50) {
+            return [...prev.slice(1), nextChapterData];
+          } else {
+            return [...prev, nextChapterData];
+          }
+        });
       }
-    }
+    }, [currentChapter]);
+
+    const { ref, inView } = useInView({
+      threshold: 0,
+    });
+
+    useEffect(() => {
+      if (inView) {
+        fetchNextChapter();
+      }
+    }, [fetchNextChapter, inView]);
 
     return (
       <div className="relative">
-        <div className="sticky top-0 bg-background pb-4">
-          <div className="w-full flex justify-center mb-3">
-            <Button onClick={() => fetchNextChapter()}>Fetch</Button>
-          </div>
+        <div className="sticky top-0 bg-background pb-4 pt-2">
           <Utility
             pageSettings={pageSettings}
             chapterNumber={parseInt(chapter)}
@@ -102,6 +115,8 @@ export const ChapterContent = ({ data, chapter, novelID }: Props) => {
             </div>
           ))}
         </div>
+        {/* div at the end to trigger inview */}
+        <div ref={ref} className="h-1"></div>
       </div>
     );
   }
