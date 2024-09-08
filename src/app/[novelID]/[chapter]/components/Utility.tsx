@@ -22,11 +22,11 @@ export interface IPageSettings {
   setFontSize: Dispatch<SetStateAction<number>>;
   lineHeight: number;
   setLineHeight: Dispatch<SetStateAction<number>>;
-  readMode: TReadMode;
-  setReadMode: Dispatch<SetStateAction<TReadMode>>;
+  // readMode: TReadMode;
+  // setReadMode: Dispatch<SetStateAction<TReadMode>>;
 }
 
-export type TReadMode = 'single' | 'infinite';
+// export type TReadMode = 'single' | 'infinite';
 
 export const Utility = ({
   chapterNumber,
@@ -37,21 +37,22 @@ export const Utility = ({
   novelID: number;
   pageSettings: IPageSettings;
 }) => {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState<string>('');
+
   const { push } = useRouter();
   const {
     fontSize,
     lineHeight,
-    readMode,
     setFontSize,
     setLineHeight,
-    setReadMode,
+    // readMode,
+    // setReadMode,
   } = pageSettings;
 
   useEffect(() => {
     const localFontSize = localStorage.getItem('fontSize');
     const localLineHeight = localStorage.getItem('lineHeight');
-    const localReadMode = localStorage.getItem('readMode');
+    // const localReadMode = localStorage.getItem('readMode');
 
     if (localFontSize) {
       setFontSize(Number(localFontSize));
@@ -60,19 +61,19 @@ export const Utility = ({
       setLineHeight(Number(localLineHeight));
     }
 
-    if (localReadMode) {
-      setReadMode(localReadMode as TReadMode);
-    }
-  }, [setFontSize, setLineHeight, setReadMode]);
+    // if (localReadMode) {
+    //   setReadMode(localReadMode as TReadMode);
+    // }
+  }, [setFontSize, setLineHeight]);
 
   const t = useTranslations('utility');
 
-  const showNavigateButton = readMode === 'single';
+  // const showNavigateButton = readMode === 'single';
   return (
     <div
       className={cn(
-        'flex gap-4 w-full items-center',
-        readMode === 'single' ? 'justify-between' : 'justify-center'
+        'flex gap-4 w-full items-center justify-between'
+        // readMode === 'single' ? 'justify-between' : 'justify-center'
       )}
     >
       <Link href={`/${novelID}/${chapterNumber - 1}`}>
@@ -114,7 +115,6 @@ export const Utility = ({
         <Dialog
           onOpenChange={(open) => {
             if (open === false) {
-              //on close
               localStorage.setItem('fontSize', String(fontSize));
               localStorage.setItem('lineHeight', String(lineHeight));
             }
@@ -125,7 +125,7 @@ export const Utility = ({
               <Settings size={18} />
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent aria-describedby="Page settings menu">
             <DialogTitle className="font-bold text-lg">
               {t('Set font size')}
             </DialogTitle>
@@ -142,7 +142,9 @@ export const Utility = ({
             <div className="flex gap-2">
               <Slider
                 value={[lineHeight]}
-                onValueChange={(value: number[]) => setLineHeight(value[0])}
+                onValueChange={(value: number[]) => {
+                  setLineHeight(value[0]);
+                }}
                 max={4}
                 step={0.1}
               />
@@ -162,7 +164,7 @@ export const Utility = ({
                 veritatis mollitia, rem itaque.
               </p>
             </div>
-            <div>
+            {/* <div>
               <p className="font-bold text-lg whitespace-nowrap mr-2 mb-4">
                 {t('Reading mode')}
               </p>
@@ -189,7 +191,7 @@ export const Utility = ({
                   {t('Infinite scroll')}
                 </Button>
               </div>
-            </div>
+            </div> */}
             <div className="flex gap-2 w-full justify-center pt-2">
               <Button
                 onClick={() => {
@@ -208,7 +210,7 @@ export const Utility = ({
       </div>
 
       <Link
-        className={cn(showNavigateButton ? 'visible' : 'invisible')}
+        // className={cn(showNavigateButton ? 'visible' : 'invisible')}
         prefetch
         href={`/${novelID}/${chapterNumber + 1}`}
       >
