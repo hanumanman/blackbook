@@ -15,5 +15,9 @@
     "Reading mode": "Chế độ đọc",
     "Single page": "Một trang",
     "Infinite scroll": "Cuộn vô tận"
+  },
+  "auth": {
+    "Login": "Đăng nhập",
+    "Logout": "Đăng xuất"
   }
 }
