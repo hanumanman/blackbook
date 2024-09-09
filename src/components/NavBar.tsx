@@ -8,6 +8,7 @@ import { authService } from '@/auth';
 
 export const NavBar = async () => {
   const session = await authService.auth();
+  console.log('TODO: Delete 🚀 ~ NavBar ~ session:', session);
   return (
     <div className="p-8 w-full border-b border-primary flex gap-4 items-center">
       <Link className="mr-8 flex gap-4 items-center" href={'/'}>
