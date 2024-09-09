@@ -1,17 +1,16 @@
-import Link from 'next/link';
-import { ModeToggle } from './ModeToggler';
-import Image from 'next/image';
-import LogoImage from '@/lib/images/logo.webp';
-import { LocaleSwitcher } from './LocaleSwitcher';
-import { AuthButton } from './AuthButton';
 import { authService } from '@/auth';
+import LogoImage from '@/lib/images/logo.webp';
+import Image from 'next/image';
+import Link from 'next/link';
+import { AuthButton } from './AuthButton';
+import { LocaleSwitcher } from './LocaleSwitcher';
+import { ModeToggle } from './ModeToggler';
 
 export const NavBar = async () => {
   const session = await authService.auth();
-  console.log('TODO: Delete 🚀 ~ NavBar ~ session:', session);
   return (
     <div className="p-8 w-full border-b border-primary flex gap-4 items-center">
-      <Link className="mr-8 flex gap-4 items-center" href={'/'}>
+      <Link className="md:mr-8 flex gap-4 items-center" href={'/'}>
         <Image
           src={LogoImage}
           alt="logo"
@@ -19,7 +18,7 @@ export const NavBar = async () => {
           height={50}
           className="rounded-md"
         />
-        <p className="font-bold text-2xl">Blackbook</p>
+        <p className="font-bold text-2xl hidden md:block">Blackbook</p>
       </Link>
       <div className="ml-auto flex gap-2 items-center">
         {session && (
@@ -31,14 +30,11 @@ export const NavBar = async () => {
               height={30}
               className="rounded-full"
             />
-            <p className="text-sm font-bold">
-              {session.user?.name?.split(' ')[0]}
-            </p>
           </div>
         )}
         <LocaleSwitcher />
         <ModeToggle />
-        <AuthButton />
+        <AuthButton session={session} />
       </div>
     </div>
   );

@@ -15,5 +15,9 @@
     "Reading mode": "Reading mode",
     "Single page": "Single page",
     "Infinite scroll": "Infinite scroll"
+  },
+  "auth": {
+    "Login": "Login",
+    "Logout": "Logout"
   }
 }
