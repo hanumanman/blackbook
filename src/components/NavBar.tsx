@@ -9,7 +9,7 @@ import { ModeToggle } from './ModeToggler';
 export const NavBar = async () => {
   const session = await authService.auth();
   return (
-    <div className="p-8 w-full border-b border-primary flex gap-4 items-center">
+    <div className="p-8 w-full bg-background shadow flex gap-4 items-center">
       <Link className="md:mr-8 flex gap-4 items-center" href={'/'}>
         <Image
           src={LogoImage}

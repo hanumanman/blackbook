@@ -6,16 +6,16 @@ import {
   DialogContent,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
 import { DialogTrigger } from '@radix-ui/react-dialog';
 import { Menu, Settings, Triangle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
+import { TableOfContents } from './TableOfContents';
 
 export interface IPageSettings {
   fontSize: number;
@@ -37,9 +37,6 @@ export const Utility = ({
   novelID: number;
   pageSettings: IPageSettings;
 }) => {
-  const [input, setInput] = useState<string>('');
-
-  const { push } = useRouter();
   const {
     fontSize,
     lineHeight,
@@ -77,39 +74,25 @@ export const Utility = ({
       )}
     >
       <Link href={`/${novelID}/${chapterNumber - 1}`}>
-        <Button>
+        <Button aria-label="Go to previous chapter">
           <Triangle size={14} className="-rotate-90" />
         </Button>
       </Link>
       <div className="flex gap-4">
         {/* Navigation input */}
-        <Dialog>
-          <DialogTrigger asChild>
+        <Sheet>
+          <SheetTrigger asChild>
             <Button aria-label="Open page navigation dialog">
               <Menu size={18} />
             </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogTitle className="font-bold text-lg">
-              {t('Select chapter')}
-            </DialogTitle>
-            <Input
-              type="number"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  push(`/${novelID}/${input}`);
-                }
-              }}
-            />
-            <Link href={`/${novelID}/${input}`}>
-              <Button aria-label="Go to selected chapter">
-                {t('Go to chapter')}
-              </Button>
-            </Link>
-          </DialogContent>
-        </Dialog>
+          </SheetTrigger>
+          <SheetContent
+            aria-describedby="Table of contents"
+            className="flex flex-col gap-3 overflow-y-scroll"
+          >
+            <TableOfContents novelID={novelID} />
+          </SheetContent>
+        </Sheet>
 
         {/* Page settings */}
         <Dialog
@@ -214,7 +197,7 @@ export const Utility = ({
         prefetch
         href={`/${novelID}/${chapterNumber + 1}`}
       >
-        <Button>
+        <Button aria-label="Go to next chapter">
           <Triangle size={14} className="rotate-90" />
         </Button>
       </Link>
