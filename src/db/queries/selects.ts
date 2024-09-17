@@ -22,8 +22,8 @@ export async function getChapter({
     .where(
       and(
         eq(chaptersTable.novel_id, novelID),
-        eq(chaptersTable.chapter_number, chapter)
-      )
+        eq(chaptersTable.chapter_number, chapter),
+      ),
     )
     .limit(1);
   return res[0];
@@ -51,9 +51,9 @@ export async function getTableOfContents({
         eq(chaptersTable.novel_id, novelID),
         or(
           like(chaptersTable.chapter_name, `%${normalizedTerm}%`),
-          like(chaptersTable.chapter_number, `%${normalizedTerm}%`)
-        )
-      )
+          like(chaptersTable.chapter_number, `%${normalizedTerm}%`),
+        ),
+      ),
     )
     .limit(limit)
     .offset(offset);

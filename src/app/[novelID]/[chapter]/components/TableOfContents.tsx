@@ -27,19 +27,23 @@ export const TableOfContents = ({ novelID }: { novelID: number }) => {
 
   const [paginationOffset, setPaginationOffset] = useState<number>(0);
 
-  const getChapters = useCallback(async () => {
-    setLoading(true);
-    const chapters = await getTableOfContents({
-      limit: 20,
-      novelID,
-      offset: paginationOffset,
-    });
-    if (chapters) setChapters(chapters);
-    setLoading(false);
-  }, [novelID, paginationOffset]);
+  const getChapters = useCallback(
+    async (offset: number) => {
+      setLoading(true);
+      const chapters = await getTableOfContents({
+        limit: 20,
+        novelID,
+        offset: offset,
+      });
+      if (chapters) setChapters(chapters);
+      setLoading(false);
+    },
+    [novelID],
+  );
 
+  //TODO: test this
   useEffect(() => {
-    getChapters();
+    getChapters(paginationOffset);
   }, [getChapters]);
 
   return (
