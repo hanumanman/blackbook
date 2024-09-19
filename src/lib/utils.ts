@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -31,12 +32,14 @@ export const customFetch = async ({
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch novels');
+      console.error(response);
+      throw new Error('Response not ok. Check log for details.');
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error :', error);
+    console.error(error);
+    throw new Error("Couldn't fetch novels. Check log for details.");
   }
 };

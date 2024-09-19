@@ -3,10 +3,9 @@
   "useTabs": false,
   "semi": true,
   "singleQuote": true,
-  "trailingComma": "es5",
+  "trailingComma": "all",
   "bracketSpacing": true,
   "arrowParens": "always",
-  "endOfLine": "lf",
   "htmlWhitespaceSensitivity": "css",
   "jsxSingleQuote": false,
   "proseWrap": "preserve"

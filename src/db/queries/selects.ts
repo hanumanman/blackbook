@@ -1,9 +1,8 @@
 'use server';
+import { normalizeVietnamese } from '@/lib/utils';
 import { and, eq, like, or } from 'drizzle-orm';
 import { db } from '..';
 import { chaptersTable, novelsTable } from '../schema';
-import { normalize } from 'path';
-import { normalizeVietnamese } from '@/lib/utils';
 
 export async function getAllNovels() {
   return await db.select().from(novelsTable);
@@ -22,8 +21,8 @@ export async function getChapter({
     .where(
       and(
         eq(chaptersTable.novel_id, novelID),
-        eq(chaptersTable.chapter_number, chapter)
-      )
+        eq(chaptersTable.chapter_number, chapter),
+      ),
     )
     .limit(1);
   return res[0];
@@ -33,15 +32,13 @@ export async function getTableOfContents({
   novelID,
   offset,
   limit,
-  searchTerm = '',
+  searchTerm,
 }: {
   novelID: number;
   offset: number;
   limit: number;
   searchTerm?: string;
 }) {
-  //TODO: fix normaize searchTerm not working
-  const normalizedTerm = normalizeVietnamese(searchTerm);
   return await db
     .select()
     .from(chaptersTable)
@@ -50,10 +47,17 @@ export async function getTableOfContents({
       and(
         eq(chaptersTable.novel_id, novelID),
         or(
-          like(chaptersTable.chapter_name, `%${normalizedTerm}%`),
-          like(chaptersTable.chapter_number, `%${normalizedTerm}%`)
-        )
-      )
+          searchTerm
+            ? like(
+                chaptersTable.chapter_name_normalized,
+                `%${normalizeVietnamese(searchTerm)}%`,
+              )
+            : undefined,
+          searchTerm
+            ? like(chaptersTable.chapter_number, `%${searchTerm}%`)
+            : undefined,
+        ),
+      ),
     )
     .limit(limit)
     .offset(offset);

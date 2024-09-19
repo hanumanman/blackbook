@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "6bb8faf6-65c4-4004-86a0-463c502eb017",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "e40baf9f-ffa2-4da5-a561-06d62436aefa",
+  "prevId": "65695c0f-7027-4fc1-acd4-1df46d7c189a",
   "tables": {
     "chapters": {
       "name": "chapters",
@@ -21,6 +21,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "chapter_name_normalized": {
+          "name": "chapter_name_normalized",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "chapter_content": {
           "name": "chapter_content",
           "type": "text",
@@ -28,9 +35,9 @@
           "notNull": true,
           "autoincrement": false
         },
-        "novel_name": {
-          "name": "novel_name",
-          "type": "text",
+        "novel_id": {
+          "name": "novel_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false

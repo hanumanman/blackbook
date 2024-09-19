@@ -28,7 +28,7 @@ export default async function RootLayout({
       <body
         className={cn(
           'min-h-screen bg-gray-200 dark:bg-background/40 font-sans antialiased',
-          fontSans.variable
+          fontSans.variable,
         )}
       >
         <Providers>

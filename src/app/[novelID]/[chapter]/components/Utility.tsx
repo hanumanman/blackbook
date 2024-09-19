@@ -69,7 +69,7 @@ export const Utility = ({
   return (
     <div
       className={cn(
-        'flex gap-4 w-full items-center justify-between'
+        'flex gap-4 w-full items-center justify-between',
         // readMode === 'single' ? 'justify-between' : 'justify-center'
       )}
     >
