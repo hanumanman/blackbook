@@ -3,6 +3,7 @@ import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 export const chaptersTable = sqliteTable('chapters', {
   id: integer('id').primaryKey(),
   chapter_name: text('chapter_name').notNull(),
+  chapter_name_normalized: text('chapter_name_normalized').notNull(),
   chapter_content: text('chapter_content').notNull(),
   novel_id: integer('novel_id').notNull(),
   chapter_number: integer('chapter_number').notNull(),

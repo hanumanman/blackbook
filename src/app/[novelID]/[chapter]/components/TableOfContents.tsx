@@ -4,9 +4,7 @@ import { Input } from '@/components/ui/input';
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
-  PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
@@ -15,7 +13,7 @@ import { getTableOfContents, TChapter } from '@/db/queries/selects';
 import { LoaderCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 
 //This is a client component
@@ -26,24 +24,21 @@ export const TableOfContents = ({ novelID }: { novelID: number }) => {
 
   const [paginationOffset, setPaginationOffset] = useState<number>(0);
 
-  const getChapters = useCallback(
-    async (offset: number) => {
-      setLoading(true);
-      const chapters = await getTableOfContents({
-        limit: 20,
-        novelID,
-        offset: offset,
-      });
-      if (chapters) setChapters(chapters);
-      setLoading(false);
-    },
-    [novelID],
-  );
+  const getChapters = async (offset: number) => {
+    setLoading(true);
+    const chapters = await getTableOfContents({
+      limit: 20,
+      novelID,
+      offset: offset,
+    });
+    if (chapters) setChapters(chapters);
+    setLoading(false);
+  };
 
-  //TODO: test this
   useEffect(() => {
     getChapters(paginationOffset);
-  }, [getChapters, paginationOffset]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paginationOffset]);
 
   return (
     <>
@@ -97,12 +92,7 @@ export const TableOfContents = ({ novelID }: { novelID: number }) => {
               >
                 <PaginationPrevious href="#" />
               </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">1</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
+
               <PaginationItem
                 onClick={() => {
                   setPaginationOffset((prev) => {

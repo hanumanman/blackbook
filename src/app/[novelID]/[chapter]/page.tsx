@@ -13,6 +13,14 @@ const ChapterPage = async ({
     chapter: Number.parseInt(chapter),
   });
 
+  if (!data) {
+    return (
+      <div className="grid place-items-center w-screen font-bold text-lg pt-12">
+        Chapter not found hehe
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-[100vh] p-6 md:p-12 lg:p-16 flex flex-col justify-between text-lg">
       <ChapterContent data={data} novelID={novelID} chapter={chapter} />

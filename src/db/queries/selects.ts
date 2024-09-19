@@ -32,15 +32,13 @@ export async function getTableOfContents({
   novelID,
   offset,
   limit,
-  searchTerm = '',
+  searchTerm,
 }: {
   novelID: number;
   offset: number;
   limit: number;
   searchTerm?: string;
 }) {
-  //TODO: fix normaize searchTerm not working
-  const normalizedTerm = normalizeVietnamese(searchTerm);
   return await db
     .select()
     .from(chaptersTable)
@@ -49,8 +47,15 @@ export async function getTableOfContents({
       and(
         eq(chaptersTable.novel_id, novelID),
         or(
-          like(chaptersTable.chapter_name, `%${normalizedTerm}%`),
-          like(chaptersTable.chapter_number, `%${normalizedTerm}%`),
+          searchTerm
+            ? like(
+                chaptersTable.chapter_name_normalized,
+                `%${normalizeVietnamese(searchTerm)}%`,
+              )
+            : undefined,
+          searchTerm
+            ? like(chaptersTable.chapter_number, `%${searchTerm}%`)
+            : undefined,
         ),
       ),
     )

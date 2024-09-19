@@ -1,0 +1,1 @@
+ALTER TABLE `chapters` ADD `chapter_name_normalized` text NOT NULL;
