@@ -7,10 +7,12 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { TNovel } from '@/db/queries/selects';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export function NovelCard({ novel }: { novel: TNovel }) {
+  const t = useTranslations('common');
   return (
     <Link href={`/${novel.id}/1`}>
       <Card className="flex flex-col h-full shadow-lg hover:scale-105 transition-all">
@@ -33,7 +35,7 @@ export function NovelCard({ novel }: { novel: TNovel }) {
           <p className="text-sm line-clamp-3">{novel.novel_description}</p>
         </CardContent>
         <CardFooter className="p-4 pt-0">
-          <Button className="w-full">Start Reading</Button>
+          <Button className="w-full">{t('Start reading')}</Button>
         </CardFooter>
       </Card>
     </Link>

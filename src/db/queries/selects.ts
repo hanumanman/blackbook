@@ -1,9 +1,8 @@
 'use server';
+import { normalizeVietnamese } from '@/lib/utils';
 import { and, eq, like, or } from 'drizzle-orm';
 import { db } from '..';
 import { chaptersTable, novelsTable } from '../schema';
-import { normalize } from 'path';
-import { normalizeVietnamese } from '@/lib/utils';
 
 export async function getAllNovels() {
   return await db.select().from(novelsTable);

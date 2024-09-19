@@ -12,7 +12,6 @@ import {
 } from '@/components/ui/pagination';
 import { SheetTitle } from '@/components/ui/sheet';
 import { getTableOfContents, TChapter } from '@/db/queries/selects';
-import { normalizeVietnamese } from '@/lib/utils';
 import { LoaderCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -44,7 +43,7 @@ export const TableOfContents = ({ novelID }: { novelID: number }) => {
   //TODO: test this
   useEffect(() => {
     getChapters(paginationOffset);
-  }, [getChapters]);
+  }, [getChapters, paginationOffset]);
 
   return (
     <>
