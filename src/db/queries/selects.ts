@@ -8,22 +8,11 @@ export async function getAllNovels() {
   return await db.select().from(novelsTable);
 }
 
-export async function getChapter({
-  novelID,
-  chapter,
-}: {
-  novelID: number;
-  chapter: number;
-}) {
+export async function getChapter({ novelID, chapter }: { novelID: number; chapter: number }) {
   const res = await db
     .select()
     .from(chaptersTable)
-    .where(
-      and(
-        eq(chaptersTable.novel_id, novelID),
-        eq(chaptersTable.chapter_number, chapter),
-      ),
-    )
+    .where(and(eq(chaptersTable.novel_id, novelID), eq(chaptersTable.chapter_number, chapter)))
     .limit(1);
   return res[0];
 }
@@ -47,15 +36,8 @@ export async function getTableOfContents({
       and(
         eq(chaptersTable.novel_id, novelID),
         or(
-          searchTerm
-            ? like(
-                chaptersTable.chapter_name_normalized,
-                `%${normalizeVietnamese(searchTerm)}%`,
-              )
-            : undefined,
-          searchTerm
-            ? like(chaptersTable.chapter_number, `%${searchTerm}%`)
-            : undefined,
+          searchTerm ? like(chaptersTable.chapter_name_normalized, `%${normalizeVietnamese(searchTerm)}%`) : undefined,
+          searchTerm ? like(chaptersTable.chapter_number, `%${searchTerm}%`) : undefined,
         ),
       ),
     )

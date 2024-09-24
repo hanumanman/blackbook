@@ -42,9 +42,7 @@ export const TableOfContents = ({ novelID }: { novelID: number }) => {
 
   return (
     <>
-      <SheetTitle className="font-bold text-lg">
-        {t('Select chapter')}
-      </SheetTitle>
+      <SheetTitle className="font-bold text-lg">{t('Select chapter')}</SheetTitle>
       <form
         className="flex flex-col gap-4"
         action={async (formData) => {
@@ -114,11 +112,7 @@ function SubmitButton() {
   const t = useTranslations('utility');
   const { pending } = useFormStatus();
   return (
-    <Button
-      type="submit"
-      aria-label="Go to selected chapter"
-      disabled={pending}
-    >
+    <Button type="submit" aria-label="Go to selected chapter" disabled={pending}>
       {pending ? <LoaderCircle className="animate-spin" /> : t('Go to chapter')}
     </Button>
   );

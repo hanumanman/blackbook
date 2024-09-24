@@ -22,9 +22,7 @@ export async function POST(request: Request) {
 
     // Find the next chapter start or the end of the string
     const nextMatch = chapterRegex.exec(text);
-    const chapterContent = text
-      .slice(startIndex, nextMatch ? nextMatch.index : text.length)
-      .trim();
+    const chapterContent = text.slice(startIndex, nextMatch ? nextMatch.index : text.length).trim();
 
     chapters.push({
       chapter_number: chapterNumber,

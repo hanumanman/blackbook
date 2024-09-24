@@ -15,14 +15,13 @@ const Page = () => {
   const onDropAccepted = useCallback((acceptedFiles: any[]) => {
     setFile(acceptedFiles[0]);
   }, []);
-  const { getRootProps, getInputProps, isDragActive, fileRejections } =
-    useDropzone({
-      onDropAccepted,
-      maxFiles: 1,
-      accept: {
-        'text/plain': ['.txt'],
-      },
-    });
+  const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
+    onDropAccepted,
+    maxFiles: 1,
+    accept: {
+      'text/plain': ['.txt'],
+    },
+  });
 
   //Handle upload
   const uploadNovels = useUploadNovels();
@@ -41,11 +40,7 @@ const Page = () => {
     <div className="flex flex-col p-24 gap-4 items-center">
       <div className="flex gap-3 w-fit items-center">
         <Label className="whitespace-nowrap text-xl">Novel ID</Label>
-        <Input
-          value={novelID}
-          onChange={(e) => setNovelID(e.target.value)}
-          type="number"
-        />
+        <Input value={novelID} onChange={(e) => setNovelID(e.target.value)} type="number" />
       </div>
 
       <div
@@ -57,9 +52,7 @@ const Page = () => {
           <p>Drop the files here ...</p>
         ) : (
           <>
-            <p>
-              Drag &apos;n&apos; drop some files here, or click to select files
-            </p>
+            <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
           </>
         )}
       </div>
@@ -71,11 +64,7 @@ const Page = () => {
       {!!file && (
         <div>
           <p>File uploaded: {file.name}</p>
-          <Button
-            onClick={() => handleUpload({ file, novelID: Number(novelID) })}
-          >
-            Upload
-          </Button>
+          <Button onClick={() => handleUpload({ file, novelID: Number(novelID) })}>Upload</Button>
         </div>
       )}
     </div>

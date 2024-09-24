@@ -2,7 +2,7 @@
 import type { TChapter } from '@/db/queries/selects';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { type IPageSettings, Utility } from './Utility';
+import { IPageSettings, Utility } from './Utility';
 
 interface Props {
   novelID: string;
@@ -12,21 +12,18 @@ interface Props {
 
 export const ChapterContent = ({ data, chapter, novelID }: Props) => {
   const t = useTranslations('common');
+  const [pageSettings, setPageSettings] = useState<IPageSettings>({
+    fontSize: 16,
+    lineHeight: 1.5,
+  });
 
-  const [fontSize, setFontSize] = useState(16);
-  const [lineHeight, setLineHeight] = useState(1.5);
-
-  const pageSettings: IPageSettings = {
-    fontSize,
-    setFontSize,
-    lineHeight,
-    setLineHeight,
-  };
+  const { fontSize, lineHeight } = pageSettings;
 
   return (
     <>
       <Utility
         pageSettings={pageSettings}
+        setPageSettings={setPageSettings}
         chapterNumber={Number.parseInt(chapter)}
         novelID={Number.parseInt(novelID)}
       />
@@ -47,6 +44,7 @@ export const ChapterContent = ({ data, chapter, novelID }: Props) => {
 
       <Utility
         pageSettings={pageSettings}
+        setPageSettings={setPageSettings}
         chapterNumber={Number.parseInt(chapter)}
         novelID={Number.parseInt(novelID)}
       />
