@@ -1,11 +1,5 @@
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { TNovel } from '@/db/queries/selects';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -28,9 +22,7 @@ export function NovelCard({ novel }: { novel: TNovel }) {
           )}
         </CardHeader>
         <CardContent className="flex-grow p-4">
-          <CardTitle className="text-lg font-bold mb-2">
-            {novel.novel_name}
-          </CardTitle>
+          <CardTitle className="text-lg font-bold mb-2">{novel.novel_name}</CardTitle>
           <p className="text-sm text-gray-500 mb-2">{novel.novel_author}</p>
           <p className="text-sm line-clamp-3">{novel.novel_description}</p>
         </CardContent>

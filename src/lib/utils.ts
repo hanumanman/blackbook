@@ -16,13 +16,7 @@ export const normalizeVietnamese = (str: string) => {
     .replace(/Đ/g, 'D');
 };
 
-export const customFetch = async ({
-  cache,
-  url,
-}: {
-  url: string;
-  cache: RequestCache;
-}) => {
+export const customFetch = async ({ cache, url }: { url: string; cache: RequestCache }) => {
   if (!baseURL) {
     throw new Error('Missing BASE_URL in env');
   }

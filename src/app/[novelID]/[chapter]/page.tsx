@@ -1,11 +1,7 @@
 import { getChapter } from '@/db/queries/selects';
 import { ChapterContent } from './components/ChapterContent';
 
-const ChapterPage = async ({
-  params,
-}: {
-  params: { novelID: string; chapter: string };
-}) => {
+const ChapterPage = async ({ params }: { params: { novelID: string; chapter: string } }) => {
   const { novelID, chapter } = params;
 
   const data = await getChapter({
@@ -14,11 +10,7 @@ const ChapterPage = async ({
   });
 
   if (!data) {
-    return (
-      <div className="grid place-items-center w-screen font-bold text-lg pt-12">
-        Chapter not found hehe
-      </div>
-    );
+    return <div className="grid place-items-center w-screen font-bold text-lg pt-12">Chapter not found hehe</div>;
   }
 
   return (
