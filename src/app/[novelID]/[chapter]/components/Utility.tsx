@@ -1,4 +1,6 @@
 'use client';
+
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -16,7 +18,6 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Menu, Settings, Triangle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { Dispatch, SetStateAction, useEffect } from 'react';
 import { TableOfContents } from './TableOfContents';
 
 export interface IPageSettings {
