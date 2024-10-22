@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
+import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -64,7 +65,9 @@ const Page = () => {
       {!!file && (
         <div>
           <p>File uploaded: {file.name}</p>
-          <Button onClick={() => handleUpload({ file, novelID: Number(novelID) })}>Upload</Button>
+          <Button disabled={uploadNovels.isPending} onClick={() => handleUpload({ file, novelID: Number(novelID) })}>
+            {uploadNovels.isPending ? <Spinner /> : 'Upload'}
+          </Button>
         </div>
       )}
     </div>
