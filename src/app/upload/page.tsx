@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useDropzone } from 'react-dropzone';
-import { useUploadNovels } from './mutations';
+import { useHehe, useUploadNovels } from './mutations';
 
 const Page = () => {
   const [file, setFile] = useState<File>();
@@ -37,8 +37,17 @@ const Page = () => {
     reader.readAsText(file);
   };
 
+  const hehe = useHehe();
+  function handleHehe() {
+    hehe.mutate({
+      textContent: 'Hello World!',
+      randomShit: Math.random(),
+    });
+  }
+
   return (
     <div className="flex flex-col p-24 gap-4 items-center">
+      <Button onClick={handleHehe}>Hehe</Button>
       <div className="flex gap-3 w-fit items-center">
         <Label className="whitespace-nowrap text-xl">Novel ID</Label>
         <Input value={novelID} onChange={(e) => setNovelID(e.target.value)} type="number" />
@@ -66,7 +75,7 @@ const Page = () => {
         <div>
           <p>File uploaded: {file.name}</p>
           <Button disabled={uploadNovels.isPending} onClick={() => handleUpload({ file, novelID: Number(novelID) })}>
-            {uploadNovels.isPending ? <Spinner /> : 'Upload'}
+            {uploadNovels.isPending ? 'Uploading...' : 'Upload'}
           </Button>
         </div>
       )}

@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
+import { toast } from 'sonner';
 
 export const useUploadNovels = () => {
   const mutationFn = ({ novelID, textContent }: { textContent: string; novelID: number }) => {
@@ -11,12 +12,28 @@ export const useUploadNovels = () => {
   };
   return useMutation({
     mutationFn,
-    mutationKey: ['uploadNovels'],
+    mutationKey: ['useUploadNovels'],
     onSuccess: () => {
-      console.log('query success');
+      toast.success('Successfully uploaded!');
     },
     onError: () => {
-      console.log('query error');
+      toast.error('Failed to upload!');
+    },
+  });
+};
+
+export const useHehe = () => {
+  const mutationFn = (body: any) => {
+    return axios.post('/api/test', body);
+  };
+  return useMutation({
+    mutationFn,
+    mutationKey: ['useHehe'],
+    onSuccess: () => {
+      toast.success('Successfully post!');
+    },
+    onError: () => {
+      toast.error('Failed to post!');
     },
   });
 };

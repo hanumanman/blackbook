@@ -1,10 +1,11 @@
 import { NavBar } from '@/components/NavBar';
 import { Providers } from '@/components/providers';
+import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
+import { getLocale } from 'next-intl/server';
 import { Roboto as FontSans } from 'next/font/google';
 import './globals.css';
-import { getLocale } from 'next-intl/server';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -29,6 +30,7 @@ export default async function RootLayout({
         <Providers>
           <NavBar />
           {children}
+          <Toaster position="top-center" />
         </Providers>
       </body>
     </html>
