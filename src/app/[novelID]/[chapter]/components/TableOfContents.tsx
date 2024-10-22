@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,7 +14,6 @@ import { getTableOfContents, TChapter } from '@/db/queries/selects';
 import { LoaderCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 
 //This is a client component

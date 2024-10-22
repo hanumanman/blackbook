@@ -1,11 +1,12 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { useCallback, useState } from 'react';
+import { Spinner } from '@/components/Spinner';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useDropzone } from 'react-dropzone';
 import { useUploadNovels } from './mutations';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 
 const Page = () => {
   const [file, setFile] = useState<File>();
@@ -64,7 +65,9 @@ const Page = () => {
       {!!file && (
         <div>
           <p>File uploaded: {file.name}</p>
-          <Button onClick={() => handleUpload({ file, novelID: Number(novelID) })}>Upload</Button>
+          <Button disabled={uploadNovels.isPending} onClick={() => handleUpload({ file, novelID: Number(novelID) })}>
+            {uploadNovels.isPending ? <Spinner /> : 'Upload'}
+          </Button>
         </div>
       )}
     </div>

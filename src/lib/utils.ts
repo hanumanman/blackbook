@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { type ClassValue, clsx } from 'clsx';
+import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 const baseURL = process.env.BASE_URL;

@@ -1,4 +1,6 @@
 {
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
+  "importOrder": ["^react$", "<BUILTIN_MODULES>", "<THIRD_PARTY_MODULES>", "^[.]"],
   "tabWidth": 2,
   "printWidth": 120,
   "useTabs": false,
