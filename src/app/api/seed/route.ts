@@ -9,13 +9,17 @@ const bodySchema = z.object({
   novelID: z.number(),
 });
 
+export async function GET() {
+  return NextResponse.json({ message: 'Hello World!' });
+}
+
 export async function POST(request: Request) {
   //Validate request body
-  const res: { textContent: string; novelID: number } = await request
+  const body: { textContent: string; novelID: number } = await request
     .json()
     .catch(() => NextResponse.json({ message: 'Invalid json' }, { status: 400 }));
 
-  const validate = bodySchema.safeParse(res);
+  const validate = bodySchema.safeParse(body);
 
   if (!validate.success) {
     return NextResponse.json({ message: validate.error.message }, { status: 400 });
@@ -23,24 +27,22 @@ export async function POST(request: Request) {
 
   const { textContent: text, novelID: novel_id } = validate.data;
 
-  //Parsing text before saving to database
-  const chapters = parseChapter(text);
-
-  // Save to database
   try {
+    //Parsing text before saving to database
+    const chapters = parseChapter({ text, novel_id });
+    // Save to database
     chapters.forEach(async (chapter) => await InsertChapter(chapter));
+    return Response.json(`Seeded novel ${novel_id} successfully`);
   } catch (error: any) {
     return NextResponse.json({ message: error.message, stack: error.stack }, { status: 500 });
   }
-
-  return Response.json(`Seeded novel ${novel_id} successfully`);
 }
 
 async function InsertChapter(chapter: TInsertChapter) {
   await db.insert(chaptersTable).values(chapter);
 }
 
-function parseChapter(text: string) {
+function parseChapter({ text, novel_id }: { text: string; novel_id: number }) {
   const chapterRegex = /(?:CHƯƠNG|Chương) (\d+):\s*([^\n]+)/g;
   const chapters = [];
   let match;
@@ -58,7 +60,7 @@ function parseChapter(text: string) {
       chapter_number: chapterNumber,
       chapter_name: chapterTitle,
       chapter_content: chapterContent,
-      novel_id: 1,
+      novel_id,
       chapter_name_normalized: normalizeVietnamese(chapterTitle),
     });
 
