@@ -1,5 +1,7 @@
+import { InferSelectModel } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
+//Data
 export const chaptersTable = sqliteTable('chapters', {
   id: integer('id').primaryKey(),
   chapter_name: text('chapter_name').notNull(),
@@ -23,3 +25,19 @@ export type TInsertNovel = typeof novelsTable.$inferInsert;
 
 export type TSelectChapter = typeof chaptersTable.$inferSelect;
 export type TSelectNovel = typeof novelsTable.$inferSelect;
+
+//Session
+export const userTable = sqliteTable('user', {
+  id: integer('id').primaryKey(),
+});
+
+export const sessionTable = sqliteTable('session', {
+  id: text('id').primaryKey(),
+  user_id: integer('user_id')
+    .notNull()
+    .references(() => userTable.id),
+  expiresAt: integer('expiresAt', { mode: 'timestamp' }).notNull(),
+});
+
+export type TUser = InferSelectModel<typeof userTable>;
+export type TSession = InferSelectModel<typeof sessionTable>;

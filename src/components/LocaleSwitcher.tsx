@@ -1,12 +1,10 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { Button } from './ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 
 export const LocaleSwitcher = () => {
-  const t = useTranslations('common');
   const { refresh } = useRouter();
 
   function setLocale(locale: string) {
@@ -23,8 +21,8 @@ export const LocaleSwitcher = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={() => setLocale('en')}>{t('English')}</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setLocale('vi')}>{t('Vietnamese')}</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setLocale('en')}>English</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setLocale('vi')}>Tiếng Việt</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
