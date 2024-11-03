@@ -33,7 +33,7 @@ export const userTable = sqliteTable('user', {
 
 export const sessionTable = sqliteTable('session', {
   id: text('id').primaryKey(),
-  user_id: integer('user_id')
+  userId: integer('user_id')
     .notNull()
     .references(() => userTable.id),
   expiresAt: integer('expiresAt', { mode: 'timestamp' }).notNull(),
