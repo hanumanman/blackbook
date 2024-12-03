@@ -24,21 +24,20 @@ export const TableOfContents = ({ novelID }: { novelID: number }) => {
 
   const [paginationOffset, setPaginationOffset] = useState<number>(0);
 
-  const getChapters = async (offset: number) => {
-    setLoading(true);
-    const chapters = await getTableOfContents({
-      limit: 20,
-      novelID,
-      offset: offset,
-    });
-    if (chapters) setChapters(chapters);
-    setLoading(false);
-  };
-
   useEffect(() => {
+    const getChapters = async (offset: number) => {
+      setLoading(true);
+      const chapters = await getTableOfContents({
+        limit: 20,
+        novelID,
+        offset: offset,
+      });
+      if (chapters) setChapters(chapters);
+      setLoading(false);
+    };
+
     getChapters(paginationOffset);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paginationOffset]);
+  }, [novelID, paginationOffset]);
 
   return (
     <>

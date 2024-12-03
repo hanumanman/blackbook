@@ -6,3 +6,7 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({ message: 'Hello World!', body });
   // return NextResponse.json({ message: 'Hello Error!', body }, { status: 500 });
 }
+
+export async function GET() {
+  return NextResponse.json('Hello test!');
+}
