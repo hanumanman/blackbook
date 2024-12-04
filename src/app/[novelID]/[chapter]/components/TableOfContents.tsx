@@ -37,7 +37,7 @@ export const TableOfContents = ({ novelID }: { novelID: number }) => {
     };
 
     getChapters(paginationOffset);
-  }, [paginationOffset, novelID]);
+  }, [novelID, paginationOffset]);
 
   return (
     <>
