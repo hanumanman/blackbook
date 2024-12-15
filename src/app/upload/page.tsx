@@ -1,18 +1,18 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useDropzone } from 'react-dropzone';
-import { useHehe, useUploadNovels } from './mutations';
+import { useUploadChapters } from './store';
 
 const Page = () => {
-  const [file, setFile] = useState<File>();
-  const [novelID, setNovelID] = useState<string>('');
+  const [file, setFile] = React.useState<File>();
+  const [novelID, setNovelID] = React.useState<string>('');
 
   //Dropzone setup
-  const onDropAccepted = useCallback((acceptedFiles: any[]) => {
+  const onDropAccepted = React.useCallback((acceptedFiles: any[]) => {
     setFile(acceptedFiles[0]);
   }, []);
   const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
@@ -24,29 +24,20 @@ const Page = () => {
   });
 
   //Handle upload
-  const uploadNovels = useUploadNovels();
-  const handleUpload = ({ file, novelID }: { file: File; novelID: number }) => {
+  const uploadNovels = useUploadChapters();
+  function handleUpload({ file, novelID }: { file: File; novelID: number }) {
     const reader = new FileReader();
-    reader.onload = () => {
-      uploadNovels.mutate({
+    reader.onload = async () => {
+      await uploadNovels.mutateAsync({
         textContent: reader.result as string,
         novelID,
       });
     };
     reader.readAsText(file);
-  };
-
-  const hehe = useHehe();
-  function handleHehe() {
-    hehe.mutate({
-      textContent: 'Hello World!',
-      randomShit: Math.random(),
-    });
   }
 
   return (
     <div className="flex flex-col p-24 gap-4 items-center">
-      <Button onClick={handleHehe}>Hehe</Button>
       <div className="flex gap-3 w-fit items-center">
         <Label className="whitespace-nowrap text-xl">Novel ID</Label>
         <Input value={novelID} onChange={(e) => setNovelID(e.target.value)} type="number" />

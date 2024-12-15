@@ -6,7 +6,7 @@ const ChapterPage = async ({ params }: { params: { novelID: string; chapter: str
 
   const data = await getChapter({
     novelID: Number.parseInt(novelID),
-    chapter: Number.parseInt(chapter),
+    chapter_number: Number.parseInt(chapter),
   });
 
   if (!data) {

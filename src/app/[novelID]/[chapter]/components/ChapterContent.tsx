@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { TChapter } from '@/db/queries/selects';
+import { type TChapter } from '@/db/queries/selects';
 import { useTranslations } from 'next-intl';
 import { IPageSettings, Utility } from './Utility';
 

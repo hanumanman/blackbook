@@ -9,11 +9,11 @@ export async function getAllNovels() {
   return await db.select().from(novelsTable);
 }
 
-export async function getChapter({ novelID, chapter }: { novelID: number; chapter: number }) {
+export async function getChapter({ novelID, chapter_number }: { novelID: number; chapter_number: number }) {
   const res = await db
     .select()
     .from(chaptersTable)
-    .where(and(eq(chaptersTable.novel_id, novelID), eq(chaptersTable.chapter_number, chapter)))
+    .where(and(eq(chaptersTable.novel_id, novelID), eq(chaptersTable.chapter_number, chapter_number)))
     .limit(1);
   return res[0];
 }

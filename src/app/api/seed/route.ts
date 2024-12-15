@@ -1,4 +1,5 @@
 import { db } from '@/db';
+import { getChapter } from '@/db/queries/selects';
 import { chaptersTable, TInsertChapter } from '@/db/schema';
 import { normalizeVietnamese } from '@/lib/utils';
 import { NextResponse } from 'next/server';
@@ -15,9 +16,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   //Validate request body
-  const body: { textContent: string; novelID: number } = await request
-    .json()
-    .catch(() => NextResponse.json({ message: 'Invalid json' }, { status: 400 }));
+  const body = await request.json().catch(() => NextResponse.json({ message: 'Invalid json' }, { status: 400 }));
 
   const validate = bodySchema.safeParse(body);
 
@@ -39,7 +38,16 @@ export async function POST(request: Request) {
 }
 
 async function InsertChapter(chapter: TInsertChapter) {
-  await db.insert(chaptersTable).values(chapter);
+  if (
+    await chaptersExisted({
+      chapter_number: chapter.chapter_number,
+      novel_id: chapter.novel_id,
+    })
+  ) {
+    return;
+  }
+
+  return await db.insert(chaptersTable).values(chapter);
 }
 
 function parseChapter({ text, novel_id }: { text: string; novel_id: number }) {
@@ -68,4 +76,12 @@ function parseChapter({ text, novel_id }: { text: string; novel_id: number }) {
     chapterRegex.lastIndex = endIndex;
   }
   return chapters;
+}
+
+async function chaptersExisted({ chapter_number, novel_id }: { chapter_number: number; novel_id: number }) {
+  const res = await getChapter({ novelID: novel_id, chapter_number });
+  if (res) {
+    return true;
+  }
+  return false;
 }
