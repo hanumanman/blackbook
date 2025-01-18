@@ -12,3 +12,44 @@ export const normalizeVietnamese = (str: string) => {
     .replace(/đ/g, 'd')
     .replace(/Đ/g, 'D');
 };
+
+// eslint-disable-next-line no-unused-vars
+export function getEnv(key: string): string;
+// eslint-disable-next-line no-unused-vars
+export function getEnv(keys: string[]): string[];
+/**
+ * Retrieves the value(s) of the specified environment variable(s).
+ *
+ * @param {string | string[]} keys - The name(s) of the environment variable(s) to retrieve.
+ * @returns {string | string[]} The value(s) of the specified environment variable(s).
+ * @throws {Error} If any of the specified environment variables are undefined.
+ *
+ * @example
+ * // Retrieve a single environment variable
+ * const dbHost = getEnv('DB_HOST');
+ *
+ * @example
+ * // Retrieve multiple environment variables
+ * const [dbHost, dbPort] = getEnv(['DB_HOST', 'DB_PORT']);
+ */
+export function getEnv(keys: string | string[]): string | string[] {
+  if (typeof keys === 'string') {
+    const value = process.env[keys];
+    if (value === undefined) {
+      throw new Error(`Environment variable ${keys} is undefined`);
+    }
+    return value;
+  }
+
+  if (Array.isArray(keys)) {
+    return keys.map((key) => {
+      const value = process.env[key];
+      if (value === undefined) {
+        throw new Error(`Environment variable ${key} is undefined`);
+      }
+      return value;
+    });
+  }
+
+  throw new Error('Invalid argument type: expected a string or an array of strings');
+}

@@ -8,6 +8,8 @@ export const chaptersTable = sqliteTable('chapters', {
   novel_id: integer('novel_id').notNull(),
   chapter_number: integer('chapter_number').notNull(),
 });
+export type TInsertChapter = typeof chaptersTable.$inferInsert;
+export type TSelectChapter = typeof chaptersTable.$inferSelect;
 
 export const novelsTable = sqliteTable('novels', {
   id: integer('id').primaryKey(),
@@ -17,9 +19,38 @@ export const novelsTable = sqliteTable('novels', {
   novel_genre: text('novel_genre').notNull(),
   novel_image_link: text('novel_image_link'),
 });
-
-export type TInsertChapter = typeof chaptersTable.$inferInsert;
 export type TInsertNovel = typeof novelsTable.$inferInsert;
-
-export type TSelectChapter = typeof chaptersTable.$inferSelect;
 export type TSelectNovel = typeof novelsTable.$inferSelect;
+
+export const usersTable = sqliteTable('users', {
+  id: integer('id').primaryKey(),
+  user_name: text('user_name').notNull(),
+  user_email: text('user_email').notNull(),
+});
+export type TInsertUser = typeof usersTable.$inferInsert;
+export type TSelectUser = typeof usersTable.$inferSelect;
+
+export const sessionTable = sqliteTable('sessions', {
+  id: integer('id').primaryKey(),
+  user_id: integer('user_id')
+    .notNull()
+    .references(() => usersTable.id),
+  expires: integer('expires', { mode: 'timestamp' }).notNull(),
+});
+export type TInsertSession = typeof sessionTable.$inferInsert;
+export type TSelectSession = typeof sessionTable.$inferSelect;
+
+export const progressTable = sqliteTable('progress', {
+  id: integer('id').primaryKey(),
+  user_id: integer('user_id')
+    .notNull()
+    .references(() => usersTable.id),
+  novel_id: integer('novel_id')
+    .notNull()
+    .references(() => novelsTable.id),
+  last_chapter_id: integer('last_chapter_id')
+    .notNull()
+    .references(() => chaptersTable.id),
+});
+export type TInsertProgress = typeof progressTable.$inferInsert;
+export type TSelectProgress = typeof progressTable.$inferSelect;
