@@ -5,13 +5,27 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const normalizeVietnamese = (str: string) => {
+/**
+ * Normalizes a Vietnamese string by removing diacritical marks and converting
+ * specific Vietnamese characters to their closest ASCII equivalents.
+ *
+ * This function performs the following transformations:
+ * - Normalizes the string using Unicode Normalization Form D (NFD).
+ * - Removes all diacritical marks.
+ * - Replaces 'đ' with 'd'.
+ * - Replaces 'Đ' with 'D'.
+ *
+ * @param str - The Vietnamese string to be normalized.
+ * @returns The normalized string with diacritical marks removed and specific
+ *          characters replaced.
+ */
+export function normalizeVietnamese(str: string) {
   return str
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/đ/g, 'd')
     .replace(/Đ/g, 'D');
-};
+}
 
 // eslint-disable-next-line no-unused-vars
 export function getEnv(key: string): string;
