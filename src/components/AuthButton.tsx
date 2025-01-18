@@ -1,6 +1,12 @@
-import { Session } from 'next-auth';
 import { getTranslations } from 'next-intl/server';
 import { Button } from './ui/button';
+
+// TODO: implement
+type Session = {
+  user: {
+    name: string;
+  };
+};
 
 export const AuthButton = async ({ session }: { session: Session | null }) => {
   // TODO: implement

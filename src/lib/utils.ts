@@ -57,11 +57,7 @@ export function getEnv(keys: string | string[]): string | string[] {
 
   if (Array.isArray(keys)) {
     return keys.map((key) => {
-      const value = process.env[key];
-      if (value === undefined) {
-        throw new Error(`Environment variable ${key} is undefined`);
-      }
-      return value;
+      return getEnv(key);
     });
   }
 
