@@ -31,7 +31,7 @@ export type TInsertUser = typeof usersTable.$inferInsert;
 export type TSelectUser = typeof usersTable.$inferSelect;
 
 export const sessionTable = sqliteTable('sessions', {
-  id: integer('id').primaryKey(),
+  id: text('id').primaryKey(),
   user_id: integer('user_id')
     .notNull()
     .references(() => usersTable.id),
@@ -41,7 +41,7 @@ export type TInsertSession = typeof sessionTable.$inferInsert;
 export type TSelectSession = typeof sessionTable.$inferSelect;
 
 export const progressTable = sqliteTable('progress', {
-  id: integer('id').primaryKey(),
+  id: text('id').primaryKey(),
   user_id: integer('user_id')
     .notNull()
     .references(() => usersTable.id),
