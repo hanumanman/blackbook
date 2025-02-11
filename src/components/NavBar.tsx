@@ -1,11 +1,14 @@
 import LogoImage from '@/lib/images/logo.webp';
+import { getEnv } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { LocaleSwitcher } from './LocaleSwitcher';
 import { ModeToggle } from './ModeToggler';
+import { Button } from './ui/button';
 
 export const NavBar = async () => {
   // const session = await authService.auth();
+  const baseUrl = getEnv('BASE_URL');
   return (
     <div className="p-8 w-full bg-background shadow flex gap-4 items-center">
       <Link className="md:mr-8 flex gap-4 items-center" href={'/'}>
@@ -21,6 +24,9 @@ export const NavBar = async () => {
         <LocaleSwitcher />
         <ModeToggle />
         {/* <AuthButton session={session} /> */}
+        <Button asChild>
+          <Link href={`${baseUrl}/auth/google`}>Login</Link>
+        </Button>
       </div>
     </div>
   );

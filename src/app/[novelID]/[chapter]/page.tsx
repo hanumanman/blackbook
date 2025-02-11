@@ -1,7 +1,8 @@
 import { getChapter } from '@/db/queries/selects';
 import { ChapterContent } from './components/ChapterContent';
 
-const ChapterPage = async ({ params }: { params: { novelID: string; chapter: string } }) => {
+const ChapterPage = async (props: { params: Promise<{ novelID: string; chapter: string }> }) => {
+  const params = await props.params;
   const { novelID, chapter } = params;
 
   const data = await getChapter({

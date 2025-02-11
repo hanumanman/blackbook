@@ -1,8 +1,10 @@
+import { cache } from 'react';
 import { db } from '@/db';
 import { sessionTable, usersTable } from '@/db/schema';
 import { sha256 } from '@oslojs/crypto/sha2';
 import { encodeBase32LowerCaseNoPadding, encodeHexLowerCase } from '@oslojs/encoding';
 import { eq } from 'drizzle-orm';
+import { cookies } from 'next/headers';
 
 /**
  * Generates a secure session token.
@@ -87,3 +89,45 @@ export async function validateSessionToken(token: string) {
 export async function invalidateSession(sessionId: string) {
   await db.delete(sessionTable).where(eq(sessionTable.id, sessionId));
 }
+
+/* Session cookies should have the following attributes:
+
+   HttpOnly: Cookies are only accessible server-side
+   SameSite=Lax: Use Strict for critical websites
+   Secure: Cookies can only be sent over HTTPS (Should be omitted when testing on localhost)
+   Max-Age or Expires: Must be defined to persist cookies
+   Path=/: Cookies can be accessed from all routes
+
+   Lucia v3 used auth_session as the session cookie name. */
+
+export async function setSessionCookie(token: string, expiresAt: Date): Promise<void> {
+  const cookieStore = await cookies();
+  cookieStore.set('auth_session', token, {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    expires: expiresAt,
+    path: '/',
+  });
+}
+
+export async function clearSessionCookie(): Promise<void> {
+  const cookieStore = await cookies();
+  cookieStore.set('auth_session', '', {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 0,
+    path: '/',
+  });
+}
+
+export const getCurrentSession = cache(async () => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('auth_session')?.value ?? null;
+  if (token === null) {
+    return { session: null, user: null };
+  }
+  const result = await validateSessionToken(token);
+  return result;
+});
