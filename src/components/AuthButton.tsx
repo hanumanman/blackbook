@@ -1,30 +1,36 @@
+import { clearSessionCookie, getCurrentSession, invalidateSession } from '@/lib/auth/auth';
+import { getEnv } from '@/lib/utils';
 import { getTranslations } from 'next-intl/server';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { Button } from './ui/button';
 
-// TODO: implement
-type Session = {
-  user: {
-    name: string;
-  };
-};
+type Session = Awaited<ReturnType<typeof getCurrentSession>>['session'];
+
+// NOTE: Next.js 15 form action must return void or Promise
+async function logout(): Promise<void> {
+  'use server';
+  const { session } = await getCurrentSession();
+  if (session === null) {
+    alert('You are not logged in');
+    return;
+  }
+  await invalidateSession(session.id);
+  clearSessionCookie();
+  redirect('/');
+}
 
 export const AuthButton = async ({ session }: { session: Session | null }) => {
-  // TODO: implement
-  function login() {
-    alert('Login');
-  }
-  function logout() {
-    alert('Logout');
-  }
-
   const t = await getTranslations('auth');
+  const baseUrl = getEnv('BASE_URL');
+
   return session ? (
     <form action={logout}>
       <Button type="submit">{t('Logout')}</Button>
     </form>
   ) : (
-    <form action={login}>
-      <Button type="submit">{t('Login')}</Button>
-    </form>
+    <Link href={`${baseUrl}/auth/google`}>
+      <Button>{t('Login')}</Button>
+    </Link>
   );
 };

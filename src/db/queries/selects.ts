@@ -3,7 +3,7 @@
 import { normalizeVietnamese } from '@/lib/utils';
 import { and, eq, like, or } from 'drizzle-orm';
 import { db } from '..';
-import { chaptersTable, novelsTable } from '../schema';
+import { chaptersTable, novelsTable, usersTable } from '../schema';
 
 export async function getAllNovels() {
   return await db.select().from(novelsTable);
@@ -49,3 +49,13 @@ export async function getTableOfContents({
 export type TNovels = Awaited<ReturnType<typeof getAllNovels>>;
 export type TNovel = TNovels[0];
 export type TChapter = Awaited<ReturnType<typeof getChapter>>;
+
+export async function getUserFromGoogleId(googleId: number) {
+  const existingUser = await db.select().from(usersTable).where(eq(usersTable.id, googleId)).limit(1);
+
+  if (existingUser.length > 0) {
+    return existingUser[0];
+  } else {
+    return null;
+  }
+}

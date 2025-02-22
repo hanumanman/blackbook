@@ -25,7 +25,8 @@ export type TSelectNovel = typeof novelsTable.$inferSelect;
 export const usersTable = sqliteTable('users', {
   id: integer('id').primaryKey(),
   user_name: text('user_name').notNull(),
-  user_email: text('user_email').notNull(),
+  user_email: text('user_email'),
+  image: text('image'),
 });
 export type TInsertUser = typeof usersTable.$inferInsert;
 export type TSelectUser = typeof usersTable.$inferSelect;

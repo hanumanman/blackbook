@@ -37,6 +37,13 @@ const FIFTEEN_DAYS = 1000 * 60 * 60 * 24 * 15;
  */
 export async function createSession(token: string, userId: number) {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+  // First verify the user exists
+  const user = await db.select().from(usersTable).where(eq(usersTable.id, userId)).get();
+
+  if (!user) {
+    throw new Error(`User with ID ${userId} not found`);
+  }
+
   const session = {
     id: sessionId,
     user_id: userId,
@@ -48,16 +55,26 @@ export async function createSession(token: string, userId: number) {
 }
 
 /**
- * Validates a session token by checking its existence and expiration in the database.
- * If the session is close to expiring, it extends the expiration date.
+ * Validates a session token and returns the associated session and user objects.
  *
- * @param {string} token - The session token to validate.
- * @returns An object containing the session and user information.
+ * @param token - The session token to validate
+ * @returns A promise resolving to an object containing:
+ *          - session: The session object if valid, null if invalid/expired
+ *          - user: The associated user object if valid, null if invalid/expired
+ *
+ * This function:
+ * - Validates the session exists and has not expired
+ * - Updates session expiry if token is nearing expiration
+ * - Returns both session and user details if valid
+ * - Returns null values if session is invalid or expired
  */
 export async function validateSessionToken(token: string) {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
   const result = await db
-    .select({ user: usersTable, session: sessionTable })
+    .select({
+      user: usersTable,
+      session: sessionTable,
+    })
     .from(sessionTable)
     .innerJoin(usersTable, eq(sessionTable.user_id, usersTable.id))
     .where(eq(sessionTable.id, sessionId));

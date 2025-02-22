@@ -2,6 +2,10 @@ import { google } from '@/lib/auth/google';
 import { generateCodeVerifier, generateState } from 'arctic';
 import { cookies } from 'next/headers';
 
+// Generate a new state and code verifier, and create a new authorization URL.
+// Add the openid and profile scope to have access to the user's profile later on.
+// Store the state and code verifier, and redirect the user to the authorization URL.
+// The user will be redirected to Google's sign in page.
 export async function GET(): Promise<Response> {
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
