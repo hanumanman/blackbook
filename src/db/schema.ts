@@ -26,6 +26,7 @@ export const usersTable = sqliteTable('users', {
   id: integer('id').primaryKey(),
   user_name: text('user_name').notNull(),
   user_email: text('user_email'),
+  google_id: integer('google_id').notNull(),
   image: text('image'),
 });
 export type TInsertUser = typeof usersTable.$inferInsert;

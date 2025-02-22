@@ -51,7 +51,7 @@ export type TNovel = TNovels[0];
 export type TChapter = Awaited<ReturnType<typeof getChapter>>;
 
 export async function getUserFromGoogleId(googleId: number) {
-  const existingUser = await db.select().from(usersTable).where(eq(usersTable.id, googleId)).limit(1);
+  const existingUser = await db.select().from(usersTable).where(eq(usersTable.google_id, googleId)).limit(1);
 
   if (existingUser.length > 0) {
     return existingUser[0];
