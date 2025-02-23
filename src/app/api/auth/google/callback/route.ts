@@ -1,13 +1,12 @@
-//Create an Route Handlers in app/api/auth/google/callback/route.ts to handle the callback.
-//Check that the state in the URL matches the one that's stored.
-//Then, validate the authorization code and stored code verifier.
-//If you passed the openid and profile scope, Google will return a token ID with the user's profile.
-//Check if the user is already registered; if not, create a new user. Finally, create a new session and set the session cookie to complete the authentication process.
+// Check that the state in the URL matches the one that's stored.
+// Then, validate the authorization code and stored code verifier.
+// If you passed the openid and profile scope, Google will return a token ID with the user's profile.
+// Check if the user is already registered; if not, create a new user. Finally, create a new session and set the session cookie to complete the authentication process.
 
 import { createUser } from '@/db/queries/inserts';
 import { getUserFromGoogleId } from '@/db/queries/selects';
 import { createSession, generateSessionToken, setSessionCookie } from '@/lib/auth/auth';
-import { google } from '@/lib/auth/google';
+import { google, GoogleClaim } from '@/lib/auth/google';
 import { decodeIdToken, OAuth2Tokens } from 'arctic';
 import { cookies } from 'next/headers';
 
@@ -35,7 +34,7 @@ export async function GET(req: Request) {
     return new Response('Invalid code or client credentials', { status: 400 });
   }
 
-  const claims: any = decodeIdToken(tokens.idToken());
+  const claims  = decodeIdToken(tokens.idToken()) as GoogleClaim;
   const googleUserId = claims.sub;
   const username = claims.name;
   const imageUrl = claims.picture;
