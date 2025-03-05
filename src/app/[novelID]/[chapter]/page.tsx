@@ -1,4 +1,6 @@
+import { saveProgress } from '@/db/queries/inserts';
 import { getChapter, getNovelFromId } from '@/db/queries/selects';
+import { getCurrentSession } from '@/lib/auth/auth';
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { ChapterContent } from './components/ChapterContent';
@@ -21,11 +23,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const ChapterPage = async (props: Props) => {
   const params = await props.params;
   const { novelID, chapter } = params;
+  const { user } = await getCurrentSession();
 
   const data = await getChapter({
     novelID: Number.parseInt(novelID),
     chapter_number: Number.parseInt(chapter),
   });
+
+  if (user) {
+    saveProgress(user.id, parseInt(novelID), parseInt(chapter), data.chapter_name);
+  }
 
   if (!data) {
     return <div className="grid place-items-center w-screen font-bold text-lg pt-12">Chapter not found hehe</div>;

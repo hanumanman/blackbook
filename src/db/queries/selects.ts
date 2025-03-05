@@ -1,9 +1,9 @@
 'use server';
 
 import { normalizeVietnamese } from '@/lib/utils';
-import { and, eq, like, or } from 'drizzle-orm';
+import { and, count, eq, like, or } from 'drizzle-orm';
 import { db } from '..';
-import { chaptersTable, novelsTable, usersTable } from '../schema';
+import { chaptersTable, novelsTable, progressTable, usersTable } from '../schema';
 
 export async function getAllNovels() {
   return await db.select().from(novelsTable);
@@ -11,7 +11,12 @@ export async function getAllNovels() {
 
 export async function getNovelFromId(id: number) {
   const result = await db.select().from(novelsTable).where(eq(novelsTable.id, id));
-  return result[0];
+
+  const chapter_count_query = await db
+    .select({ count: count() })
+    .from(chaptersTable)
+    .where(eq(chaptersTable.novel_id, id));
+  return { ...result[0], chapter_count: chapter_count_query[0].count };
 }
 
 export async function getChapter({ novelID, chapter_number }: { novelID: number; chapter_number: number }) {
@@ -63,4 +68,13 @@ export async function getUserFromGoogleId(googleId: number) {
   } else {
     return null;
   }
+}
+
+export async function getProgress(novelId: number, userId: number) {
+  const progress = await db
+    .select()
+    .from(progressTable)
+    .where(and(eq(progressTable.novel_id, novelId), eq(progressTable.user_id, userId)))
+    .limit(1);
+  return progress[0];
 }
