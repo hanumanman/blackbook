@@ -1,0 +1,2 @@
+- Handle error when there is no progress
+- Fix UI for novel detail page
