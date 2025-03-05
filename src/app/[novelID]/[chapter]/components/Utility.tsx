@@ -15,7 +15,7 @@ import { Sheet, SheetContent, SheetDescription, SheetTrigger } from '@/component
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
-import { Menu, Settings, Triangle } from 'lucide-react';
+import { Home, Menu, Settings, Triangle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { TableOfContents } from './TableOfContents';
@@ -141,6 +141,13 @@ export const Utility = ({ chapterNumber, novelID, pageSettings, setPageSettings 
             </DialogDescription>
           </DialogContent>
         </Dialog>
+
+        {/* Return to novel page */}
+        <Link href={`/${novelID}`}>
+          <Button aria-label="Return to novel page">
+            <Home size={18} />
+          </Button>
+        </Link>
       </div>
 
       <Link prefetch href={`/${novelID}/${chapterNumber + 1}`}>
