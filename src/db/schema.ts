@@ -1,13 +1,23 @@
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { foreignKey, integer, sqliteTable, text, unique } from 'drizzle-orm/sqlite-core';
 
-export const chaptersTable = sqliteTable('chapters', {
-  id: integer('id').primaryKey(),
-  chapter_name: text('chapter_name').notNull(),
-  chapter_name_normalized: text('chapter_name_normalized').notNull(),
-  chapter_content: text('chapter_content').notNull(),
-  novel_id: integer('novel_id').notNull(),
-  chapter_number: integer('chapter_number').notNull(),
-});
+export const chaptersTable = sqliteTable(
+  'chapters',
+  {
+    id: integer('id').primaryKey(),
+    chapter_name: text('chapter_name').notNull(),
+    chapter_name_normalized: text('chapter_name_normalized').notNull(),
+    chapter_content: text('chapter_content').notNull(),
+    novel_id: integer('novel_id')
+      .notNull()
+      .references(() => novelsTable.id),
+    chapter_number: integer('chapter_number').notNull(),
+  },
+  (table) => ({
+    // Add unique constraint
+    novelChapterUnique: unique().on(table.novel_id, table.chapter_number),
+  }),
+);
+
 export type TInsertChapter = typeof chaptersTable.$inferInsert;
 export type TSelectChapter = typeof chaptersTable.$inferSelect;
 
@@ -42,17 +52,27 @@ export const sessionTable = sqliteTable('sessions', {
 export type TInsertSession = typeof sessionTable.$inferInsert;
 export type TSelectSession = typeof sessionTable.$inferSelect;
 
-export const progressTable = sqliteTable('progress', {
-  id: text('id').primaryKey(),
-  user_id: integer('user_id')
-    .notNull()
-    .references(() => usersTable.id),
-  novel_id: integer('novel_id')
-    .notNull()
-    .references(() => novelsTable.id),
-  last_chapter_id: integer('last_chapter_id')
-    .notNull()
-    .references(() => chaptersTable.id),
-});
+export const progressTable = sqliteTable(
+  'progress',
+  {
+    id: integer('id').primaryKey(),
+    user_id: integer('user_id')
+      .notNull()
+      .references(() => usersTable.id),
+    novel_id: integer('novel_id')
+      .notNull()
+      .references(() => novelsTable.id),
+    last_chapter_number: integer('last_chapter_number').notNull(),
+    last_chapter_name: text('last_chapter_name'),
+  },
+  (table) => ({
+    // Composite foreign key referencing chaptersTable
+    fk: foreignKey({
+      columns: [table.novel_id, table.last_chapter_number],
+      foreignColumns: [chaptersTable.novel_id, chaptersTable.chapter_number],
+    }),
+  }),
+);
+
 export type TInsertProgress = typeof progressTable.$inferInsert;
 export type TSelectProgress = typeof progressTable.$inferSelect;

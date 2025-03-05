@@ -8,7 +8,7 @@ import Link from 'next/link';
 export function NovelCard({ novel }: { novel: TNovel }) {
   const t = useTranslations('common');
   return (
-    <Link href={`/${novel.id}/1`}>
+    <Link href={`/${novel.id}`}>
       <Card className="flex flex-col h-full shadow-lg hover:scale-105 transition-all">
         <CardHeader className="p-0">
           {novel.novel_image_link && (

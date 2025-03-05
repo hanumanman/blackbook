@@ -54,8 +54,9 @@ function parseChapter({ text, novel_id }: { text: string; novel_id: number }) {
   const chapterRegex = /(?:CHƯƠNG|Chương) (\d+):\s*([^\n]+)/g;
   const chapters = [];
   let match;
+  let chapterNumber = 0;
   while ((match = chapterRegex.exec(text)) !== null) {
-    const chapterNumber = parseInt(match[1], 10);
+    chapterNumber += 1;
     const chapterTitle = match[2].trim();
     const startIndex = match.index + match[0].length;
     const endIndex = chapterRegex.lastIndex;
