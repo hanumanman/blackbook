@@ -1,7 +1,24 @@
-import { getChapter } from '@/db/queries/selects';
+import { getChapter, getNovelFromId } from '@/db/queries/selects';
+import { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { ChapterContent } from './components/ChapterContent';
 
-const ChapterPage = async (props: { params: Promise<{ novelID: string; chapter: string }> }) => {
+interface Props {
+  params: Promise<{ novelID: string; chapter: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  // read route params
+  const { chapter, novelID } = await params;
+  const novel = await getNovelFromId(parseInt(novelID));
+
+  const t = await getTranslations('common');
+  return {
+    title: `${t('Chapter')} ${chapter} - ${novel.novel_name}`,
+  };
+}
+
+const ChapterPage = async (props: Props) => {
   const params = await props.params;
   const { novelID, chapter } = params;
 
