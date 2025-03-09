@@ -36,7 +36,7 @@ export default async function NovelPage({ params }: Props) {
       chapter: progress?.last_chapter_number,
       title: progress?.last_chapter_name,
       // Calculate reading progress based on the last read chapter
-      progress: progress && Math.floor((progress?.last_chapter_number / novelData.chapter_count) * 100),
+      progress: progress ? Math.floor((progress?.last_chapter_number / novelData.chapter_count) * 100) : 0,
     },
   };
 
@@ -52,12 +52,12 @@ export default async function NovelPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-background">
-      {/* Hero section with cover and basic info */}
+      {/* SECTION: Hero section with cover and basic info */}
       <div className="bg-gradient-to-b from-muted/50 to-background pb-10 pt-6">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col gap-8 md:flex-row md:gap-12">
-            {/* Cover image */}
-            <div className="flex-shrink-0">
+            {/* SECTION: Cover image */}
+            <div className="flex-shrink-0 flex flex-col items-center ">
               <div className="relative h-[400px] w-[250px] overflow-hidden rounded-lg shadow-lg md:h-[500px] md:w-[320px]">
                 <Image
                   src={novel.coverImage || '/placeholder.svg'}
@@ -79,7 +79,7 @@ export default async function NovelPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Novel details */}
+            {/* SECTION: Novel details */}
             <div className="flex flex-1 flex-col">
               <div className="mb-2 flex flex-wrap gap-2">
                 {novel.genre.map((genre) => (
@@ -111,6 +111,7 @@ export default async function NovelPage({ params }: Props) {
                 <span className="text-muted-foreground">({novel.reviews.toLocaleString()} reviews)</span>
               </div>
 
+              {/* SECTION: Reading progress card */}
               {!user ? (
                 <Card className="mt-6 border-2 border-primary/10 bg-primary/5">
                   <CardContent className="p-4 md:p-6">
@@ -123,10 +124,9 @@ export default async function NovelPage({ params }: Props) {
                         your devices.
                       </p>
                       <div className="flex flex-col gap-2 sm:flex-row">
-                        <Button className="w-full sm:w-auto">Start Reading</Button>
-                        <Button variant="outline" className="w-full sm:w-auto">
-                          Sign In
-                        </Button>
+                        <Link href={`/${novelID}/1`}>
+                          <Button className="w-full sm:w-auto">Start Reading</Button>
+                        </Link>
                       </div>
                     </div>
                   </CardContent>
@@ -141,14 +141,20 @@ export default async function NovelPage({ params }: Props) {
                       </div>
                       <Progress value={novel.lastRead.progress} className="h-2" />
                       <div className="flex flex-col gap-1">
-                        <p className="text-sm text-muted-foreground">You left off at:</p>
-                        <p className="font-medium">
-                          Chapter {novel.lastRead.chapter}: {novel.lastRead.title}
-                        </p>
+                        {progress?.last_chapter_number ? (
+                          <>
+                            <p className="text-sm text-muted-foreground">You left off at:</p>
+                            <p className="font-medium">
+                              Chapter {novel.lastRead.chapter}: {novel.lastRead.title}
+                            </p>
+                          </>
+                        ) : (
+                          <p className="text-sm text-muted-foreground">You havent started reading yet</p>
+                        )}
                       </div>
-                      <Link href={`/${novelID}/${progress?.last_chapter_number}`}>
+                      <Link href={`/${novelID}/${progress?.last_chapter_number || 1}`}>
                         <Button className="mt-2 w-full">
-                          Continue Reading
+                          {progress?.last_chapter_number ? 'Continue' : 'Start'} Reading
                           <ChevronRight className="ml-1 h-4 w-4" />
                         </Button>
                       </Link>
@@ -161,7 +167,7 @@ export default async function NovelPage({ params }: Props) {
         </div>
       </div>
 
-      {/* Tabs for synopsis, chapters, etc. */}
+      {/* SECTION: Tabs for synopsis, chapters, etc. */}
       <div className="container px-4 py-8 md:px-6">
         <Tabs defaultValue="synopsis" className="w-full">
           <TabsList className="mb-6 grid w-full grid-cols-3 md:w-auto">
@@ -171,9 +177,9 @@ export default async function NovelPage({ params }: Props) {
           </TabsList>
           <TabsContent value="synopsis" className="mt-0">
             <div className="prose max-w-none dark:prose-invert">
-              <p className="text-lg leading-relaxed">{novel.synopsis}</p>
+              <p className=" leading-relaxed">{novel.synopsis}</p>
               <Link className="mt-6 flex justify-center" href={`/${novelID}/1`}>
-                <Button size="lg">Start Reading</Button>
+                <Button size="lg">Read from Beginning</Button>
               </Link>
             </div>
           </TabsContent>
@@ -250,10 +256,7 @@ export default async function NovelPage({ params }: Props) {
               <Separator />
               <div>
                 <h2 className="text-2xl font-bold">About the Author</h2>
-                <p className="mt-4 text-muted-foreground">
-                  Eleanor Blackwood is an award-winning author known for her immersive science fiction worlds and
-                  complex character development. The Silent Echo is her fifth novel and the first in a planned trilogy.
-                </p>
+                <p className="mt-4 text-muted-foreground">{novel.author}</p>
               </div>
             </div>
           </TabsContent>
