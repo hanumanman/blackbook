@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     const chapters = parseChapter({ text, novel_id });
     // Save to database
     chapters.forEach(async (chapter) => await InsertChapter(chapter));
-    return Response.json(`Seeded novel ${novel_id} successfully`);
+    return NextResponse.json(`Seeded novel ${novel_id} successfully`);
   } catch (error: any) {
     return NextResponse.json({ message: error.message, stack: error.stack }, { status: 500 });
   }

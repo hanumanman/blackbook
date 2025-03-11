@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { saveProgress } from '@/db/queries/inserts';
 import { type TChapter } from '@/db/queries/selects';
+import { TSelectUser } from '@/db/schema';
 import { useTranslations } from 'next-intl';
 import { IPageSettings, Utility } from './Utility';
 
@@ -9,9 +11,10 @@ interface Props {
   novelID: string;
   chapter: string;
   data: TChapter;
+  user: TSelectUser | null;
 }
 
-export const ChapterContent = ({ data, chapter, novelID }: Props) => {
+export const ChapterContent = ({ data, chapter, novelID, user }: Props) => {
   const t = useTranslations('common');
   const [pageSettings, setPageSettings] = useState<IPageSettings>({
     fontSize: 16,
@@ -19,6 +22,13 @@ export const ChapterContent = ({ data, chapter, novelID }: Props) => {
   });
 
   const { fontSize, lineHeight } = pageSettings;
+
+  React.useEffect(() => {
+    // Need to wrap in useEffect to avoid calling saveProgress when prefetching
+    if (user) {
+      saveProgress(user.id, parseInt(novelID), parseInt(chapter), data.chapter_name);
+    }
+  }, [chapter, data.chapter_name, novelID, user, user?.id]);
 
   return (
     <>

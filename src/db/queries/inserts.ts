@@ -1,3 +1,4 @@
+'use server'
 import { eq } from 'drizzle-orm';
 import { db } from '..';
 import { progressTable, usersTable } from '../schema';
