@@ -50,7 +50,7 @@ export const Utility = ({ chapterNumber, novelID, pageSettings, setPageSettings 
 
   return (
     <div className={cn('flex gap-4 w-full items-center justify-between')}>
-      <Link href={`/${novelID}/${chapterNumber - 1}`}>
+      <Link href={chapterNumber > 1 ? `/${novelID}/${chapterNumber - 1}` : '#'}>
         <Button aria-label="Go to previous chapter">
           <Triangle size={14} className="-rotate-90" />
         </Button>

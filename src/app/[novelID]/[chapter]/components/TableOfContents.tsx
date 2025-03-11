@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { Spinner } from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
@@ -10,13 +12,12 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { SheetTitle } from '@/components/ui/sheet';
-import { getTableOfContents, TChapter } from '@/db/queries/selects';
+import { getChaptersList, TChapter } from '@/db/queries/selects';
 import { LoaderCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useFormStatus } from 'react-dom';
 
-//This is a client component
 export const TableOfContents = ({ novelID }: { novelID: number }) => {
   const t = useTranslations('utility');
   const [chapters, setChapters] = useState<TChapter[]>([]);
@@ -27,7 +28,7 @@ export const TableOfContents = ({ novelID }: { novelID: number }) => {
   useEffect(() => {
     const getChapters = async (offset: number) => {
       setLoading(true);
-      const chapters = await getTableOfContents({
+      const chapters = await getChaptersList({
         limit: 20,
         novelID,
         offset: offset,
@@ -47,7 +48,7 @@ export const TableOfContents = ({ novelID }: { novelID: number }) => {
         action={async (formData) => {
           setPaginationOffset(0);
           const searchTerm = formData.get('searchTerm')?.toString() || '';
-          const chapters = await getTableOfContents({
+          const chapters = await getChaptersList({
             limit: 20,
             novelID,
             offset: paginationOffset,

@@ -28,7 +28,7 @@ export async function getChapter({ novelID, chapter_number }: { novelID: number;
   return res[0];
 }
 
-export async function getTableOfContents({
+export async function getChaptersList({
   novelID,
   offset,
   limit,
