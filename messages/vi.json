@@ -3,7 +3,20 @@
     "Chapter": "Chương",
     "English": "Tiếng Anh",
     "Vietnamese": "Tiếng Việt",
-    "Start reading": "Đọc"
+    "Start reading": "Đọc",
+    "Continue reading": "Tiếp tục đọc",
+    "You left off at": "Bạn đang đọc tới",
+    "You haven't started reading yet": "Bạn chưa bắt đầu đọc",
+    "Read from beginning": "Đọc từ đầu",
+    "reviews": "đánh giá",
+    "Synopsis": "Tóm tắt",
+    "Details": "Chi tiết",
+    "Chapters": "Chương",
+    "progress": "Hoàn thành {percent}%",
+    "SignInPrompt": "Đăng nhập để theo dõi tiến trình đọc của bạn, đánh dấu chương yêu thích, và đồng bộ qua tất cả các thiết bị của bạn.",
+    "Table of Contents": "Mục lục",
+    "Chapters number": "Tổng cộng {chapterNumber} chương",
+    "View all chapters": "Xem tất cả chương"
   },
   "utility": {
     "Next": "Chương tiếp",

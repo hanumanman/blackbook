@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 
 interface Chapter {
@@ -15,11 +16,12 @@ interface ChaptersTabProps {
   novelID: string;
 }
 
-export function ChaptersTab({ chapters, totalChapters, currentChapter, novelID }: ChaptersTabProps) {
+export async function ChaptersTab({ chapters, totalChapters, currentChapter, novelID }: ChaptersTabProps) {
+  const t = await getTranslations('common');
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold">Table of Contents</h2>
-      <p className="text-muted-foreground">{totalChapters} chapters in total</p>
+      <h2 className="text-2xl font-bold">{t('Table of Contents')}</h2>
+      <p className="text-muted-foreground">{t('Chapters number', { chapterNumber: totalChapters })}</p>
       <Separator />
       <div className="space-y-2">
         {chapters.map((chapter) => (
@@ -45,11 +47,10 @@ export function ChaptersTab({ chapters, totalChapters, currentChapter, novelID }
         ))}
         {totalChapters > chapters.length && (
           <Button variant="ghost" className="w-full">
-            View All Chapters
+            {t('View all chapters')}
           </Button>
         )}
       </div>
     </div>
   );
 }
-

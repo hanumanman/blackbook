@@ -51,7 +51,7 @@ export const Utility = ({ chapterNumber, novelID, pageSettings, setPageSettings 
   return (
     <div className={cn('flex gap-4 w-full items-center justify-between')}>
       <Link href={chapterNumber > 1 ? `/${novelID}/${chapterNumber - 1}` : '#'}>
-        <Button aria-label="Go to previous chapter">
+        <Button variant={'outline'} aria-label="Go to previous chapter">
           <Triangle size={14} className="-rotate-90" />
         </Button>
       </Link>
@@ -59,7 +59,7 @@ export const Utility = ({ chapterNumber, novelID, pageSettings, setPageSettings 
         {/* Navigation input */}
         <Sheet>
           <SheetTrigger asChild>
-            <Button aria-label="Open page navigation dialog">
+            <Button variant={'outline'} aria-label="Open page navigation dialog">
               <Menu size={18} />
             </Button>
           </SheetTrigger>
@@ -83,7 +83,7 @@ export const Utility = ({ chapterNumber, novelID, pageSettings, setPageSettings 
           }}
         >
           <DialogTrigger asChild>
-            <Button aria-label="Open page settings">
+            <Button aria-label="Open page settings" variant={'outline'}>
               <Settings size={18} />
             </Button>
           </DialogTrigger>
@@ -126,6 +126,7 @@ export const Utility = ({ chapterNumber, novelID, pageSettings, setPageSettings 
 
             <div className="flex gap-2 w-full justify-center pt-2">
               <Button
+                variant={'outline'}
                 onClick={() => {
                   setPageSettings({ fontSize: 16, lineHeight: 1.5 });
                 }}
@@ -133,7 +134,9 @@ export const Utility = ({ chapterNumber, novelID, pageSettings, setPageSettings 
                 Reset
               </Button>
               <DialogClose asChild>
-                <Button aria-label="Save settings">{t('Save')}</Button>
+                <Button variant={'outline'} aria-label="Save settings">
+                  {t('Save')}
+                </Button>
               </DialogClose>
             </div>
             <DialogDescription>
@@ -144,14 +147,14 @@ export const Utility = ({ chapterNumber, novelID, pageSettings, setPageSettings 
 
         {/* Return to novel page */}
         <Link href={`/${novelID}`}>
-          <Button aria-label="Return to novel page">
+          <Button aria-label="Return to novel page" variant={'outline'}>
             <Home size={18} />
           </Button>
         </Link>
       </div>
 
       <Link prefetch href={`/${novelID}/${chapterNumber + 1}`}>
-        <Button aria-label="Go to next chapter">
+        <Button aria-label="Go to next chapter" variant={'outline'}>
           <Triangle size={14} className="rotate-90" />
         </Button>
       </Link>

@@ -3,7 +3,20 @@
     "Chapter": "Chapter",
     "English": "English",
     "Vietnamese": "Vietnamese",
-    "Start reading": "Start reading"
+    "Start reading": "Start reading",
+    "Continue reading": "Continue reading",
+    "You left off at": "You left off at",
+    "Read from beginning": "Read from beginning",
+    "You haven't started reading yet": "You haven't started reading yet",
+    "reviews": "reviews",
+    "Synopsis": "Synopsis",
+    "Details": "Details",
+    "Chapters": "Chapters",
+    "progress": "{percent}% completed",
+    "SignInPrompt": "Sign in to keep track of your reading progress, bookmark favorite chapters, and sync across all your devices.",
+    "Table of Contents": "Table of Contents",
+    "Chapters number": "{chapterNumber} chapters in total",
+    "View all chapters": "View all chapters"
   },
   "utility": {
     "Next": "Next",

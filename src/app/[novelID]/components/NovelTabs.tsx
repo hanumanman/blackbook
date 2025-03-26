@@ -1,4 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { getTranslations } from 'next-intl/server';
 import { INovel } from '../page';
 import { ChaptersTab } from './ChaptersTab';
 import { DetailsTab } from './DetailsTab';
@@ -15,13 +16,14 @@ interface NovelTabsProps {
   novelID: string;
 }
 
-export function NovelTabs({ novel, chapters, novelID }: NovelTabsProps) {
+export async function NovelTabs({ novel, chapters, novelID }: NovelTabsProps) {
+  const t = await getTranslations('common');
   return (
     <Tabs defaultValue="synopsis" className="w-full">
       <TabsList className="mb-6 grid w-full grid-cols-3 md:w-auto">
-        <TabsTrigger value="synopsis">Synopsis</TabsTrigger>
-        <TabsTrigger value="chapters">Chapters</TabsTrigger>
-        <TabsTrigger value="details">Details</TabsTrigger>
+        <TabsTrigger value="synopsis">{t('Synopsis')}</TabsTrigger>
+        <TabsTrigger value="chapters">{t('Chapters')}</TabsTrigger>
+        <TabsTrigger value="details">{t('Details')}</TabsTrigger>
       </TabsList>
       <TabsContent value="synopsis" className="mt-0">
         <SynopsisTab synopsis={novel.synopsis} novelID={novelID} />

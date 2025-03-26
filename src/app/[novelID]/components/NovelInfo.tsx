@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Star } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 
 interface NovelInfoProps {
@@ -10,7 +11,8 @@ interface NovelInfoProps {
   reviews: number;
 }
 
-export function NovelInfo({ title, author, genre, rating, reviews }: NovelInfoProps) {
+export async function NovelInfo({ title, author, genre, rating, reviews }: NovelInfoProps) {
+  const t = await getTranslations('common');
   return (
     <>
       <div className="mb-2 flex flex-wrap gap-2">
@@ -33,15 +35,16 @@ export function NovelInfo({ title, author, genre, rating, reviews }: NovelInfoPr
           {[...Array(5)].map((_, i) => (
             <Star
               key={i}
-              className={`h-5 w-5 ${
-                i < Math.floor(rating) ? 'fill-primary text-primary' : 'fill-muted text-muted'
-              }`}
+              className={`h-5 w-5 ${i < Math.floor(rating) ? 'fill-primary text-primary' : 'fill-muted text-muted'}`}
             />
           ))}
         </div>
         <span className="font-medium">{rating}</span>
-        <span className="text-muted-foreground">({reviews.toLocaleString()} reviews)</span>
+        <span className="text-muted-foreground">
+          ({reviews.toLocaleString()} {t('reviews')})
+        </span>
       </div>
     </>
   );
 }
+

@@ -26,11 +26,13 @@ export const AuthButton = async ({ session }: { session: Session | null }) => {
 
   return session ? (
     <form action={logout}>
-      <Button type="submit">{t('Logout')}</Button>
+      <Button variant={'outline'} type="submit">
+        {t('Logout')}
+      </Button>
     </form>
   ) : (
     <Link href={`${baseUrl}/auth/google`}>
-      <Button>{t('Login')}</Button>
+      <Button variant={'outline'}>{t('Login')}</Button>
     </Link>
   );
 };

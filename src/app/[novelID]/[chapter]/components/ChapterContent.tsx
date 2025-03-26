@@ -32,13 +32,14 @@ export const ChapterContent = ({ data, chapter, novelID, user }: Props) => {
 
   return (
     <>
-      <Utility
-        pageSettings={pageSettings}
-        setPageSettings={setPageSettings}
-        chapterNumber={Number.parseInt(chapter)}
-        novelID={Number.parseInt(novelID)}
-      />
-
+      <div className="sticky top-0 left-0 flex dark:bg-[#11131d] bg-[#e5e7eb] justify-center items-center w-full py-3">
+        <Utility
+          pageSettings={pageSettings}
+          setPageSettings={setPageSettings}
+          chapterNumber={Number.parseInt(chapter)}
+          novelID={Number.parseInt(novelID)}
+        />
+      </div>
       <div
         className="flex flex-col items-center gap-3 pt-3 pb-12"
         style={{
