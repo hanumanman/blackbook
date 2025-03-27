@@ -32,7 +32,7 @@ export const ChapterContent = ({ data, chapter, novelID, user }: Props) => {
 
   return (
     <>
-      <div className="sticky top-0 left-0 flex dark:bg-[#11131d] bg-[#e5e7eb] justify-center items-center w-full py-3">
+      <div className="sticky top-0 left-0 flex bg-transparent justify-center items-center w-full py-3">
         <Utility
           pageSettings={pageSettings}
           setPageSettings={setPageSettings}
