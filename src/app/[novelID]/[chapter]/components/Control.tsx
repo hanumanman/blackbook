@@ -1,6 +1,5 @@
 'use client';
 
-import { Dispatch, SetStateAction, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -18,6 +17,7 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Home, Menu, Settings, Triangle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import React, { Dispatch, SetStateAction } from 'react';
 import { TableOfContents } from './TableOfContents';
 
 export interface IPageSettings {
@@ -31,12 +31,12 @@ interface Props {
   pageSettings: IPageSettings;
   setPageSettings: Dispatch<SetStateAction<IPageSettings>>;
 }
-export const Utility = ({ chapterNumber, novelID, pageSettings, setPageSettings }: Props) => {
+export const Control = ({ chapterNumber, novelID, pageSettings, setPageSettings }: Props) => {
   const t = useTranslations('utility');
   const { fontSize, lineHeight } = pageSettings;
   const { setLocalSettings, getLocalSettings } = useLocalSettings();
 
-  useEffect(() => {
+  React.useEffect(() => {
     const { fontSize: localFontSize, lineHeight: localLineHeight } = getLocalSettings();
 
     if (!!localFontSize) {
@@ -47,6 +47,7 @@ export const Utility = ({ chapterNumber, novelID, pageSettings, setPageSettings 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setPageSettings]);
+
 
   return (
     <div className={cn('flex gap-4 w-full items-center justify-between')}>

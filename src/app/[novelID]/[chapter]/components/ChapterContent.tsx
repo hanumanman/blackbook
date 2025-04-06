@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
 import { saveProgress } from '@/db/queries/inserts';
 import { type TChapter } from '@/db/queries/selects';
 import { TSelectUser } from '@/db/schema';
+import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
-import { IPageSettings, Utility } from './Utility';
+import React from 'react';
+import { Control, IPageSettings } from './Control';
 
 interface Props {
   novelID: string;
@@ -16,11 +17,9 @@ interface Props {
 
 export const ChapterContent = ({ data, chapter, novelID, user }: Props) => {
   const t = useTranslations('common');
-  const [pageSettings, setPageSettings] = useState<IPageSettings>({
-    fontSize: 16,
-    lineHeight: 1.5,
-  });
 
+
+  const { controlVisible, toggleControl, pageSettings, setPageSettings } = useControl();
   const { fontSize, lineHeight } = pageSettings;
 
   React.useEffect(() => {
@@ -30,10 +29,12 @@ export const ChapterContent = ({ data, chapter, novelID, user }: Props) => {
     }
   }, [chapter, data.chapter_name, novelID, user, user?.id]);
 
+
+
   return (
     <>
-      <div className="sticky top-0 left-0 flex bg-transparent justify-center items-center w-full py-3">
-        <Utility
+      <div className={cn("flex bg-[#e5e7eb] dark:bg-[#11131d] justify-center items-center w-full py-3 transform transition-all duration-300 ease-in-out sticky -top-20 left-0", controlVisible && "top-0 ")}>
+        <Control
           pageSettings={pageSettings}
           setPageSettings={setPageSettings}
           chapterNumber={Number.parseInt(chapter)}
@@ -42,6 +43,7 @@ export const ChapterContent = ({ data, chapter, novelID, user }: Props) => {
       </div>
       <div
         className="flex flex-col items-center gap-3 pt-3 pb-12"
+        onClick={toggleControl}
         style={{
           fontSize: `${fontSize}px`,
           lineHeight: `${lineHeight}`,
@@ -54,7 +56,7 @@ export const ChapterContent = ({ data, chapter, novelID, user }: Props) => {
         <p className="whitespace-pre-line">{data.chapter_content}</p>
       </div>
 
-      <Utility
+      <Control
         pageSettings={pageSettings}
         setPageSettings={setPageSettings}
         chapterNumber={Number.parseInt(chapter)}
@@ -63,3 +65,19 @@ export const ChapterContent = ({ data, chapter, novelID, user }: Props) => {
     </>
   );
 };
+
+const useControl = () => {
+  const [showControl, setShowControl] = React.useState<boolean>(false);
+  const toggleControl = () => {
+    setShowControl(show => !show);
+  };
+
+
+  const [pageSettings, setPageSettings] = React.useState<IPageSettings>({
+    fontSize: 16,
+    lineHeight: 1.5,
+  });
+
+
+  return { controlVisible: showControl, toggleControl, pageSettings, setPageSettings };
+};  
