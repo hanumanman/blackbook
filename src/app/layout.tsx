@@ -26,7 +26,12 @@ export default async function RootLayout({
   const locale = await getLocale();
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={cn('min-h-screen bg-gray-200 dark:bg-[#11131d] font-sans antialiased', fontSans.variable)}>
+      <body
+        className={cn(
+          'h-[100dvh] overflow-y-scroll bg-gray-200 dark:bg-[#11131d] font-sans antialiased',
+          fontSans.variable,
+        )}
+      >
         <Providers>
           <NavBar />
           {children}
