@@ -1,11 +1,11 @@
 'use client';
 
+import React from 'react';
 import { saveProgress } from '@/db/queries/inserts';
 import { type TChapter } from '@/db/queries/selects';
 import { TSelectUser } from '@/db/schema';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
-import React from 'react';
 import { Control, IPageSettings } from './Control';
 
 interface Props {
@@ -18,7 +18,6 @@ interface Props {
 export const ChapterContent = ({ data, chapter, novelID, user }: Props) => {
   const t = useTranslations('common');
 
-
   const { controlVisible, toggleControl, pageSettings, setPageSettings } = useControl();
   const { fontSize, lineHeight } = pageSettings;
 
@@ -29,11 +28,14 @@ export const ChapterContent = ({ data, chapter, novelID, user }: Props) => {
     }
   }, [chapter, data.chapter_name, novelID, user, user?.id]);
 
-
-
   return (
     <>
-      <div className={cn("flex bg-[#e5e7eb] dark:bg-[#11131d] justify-center items-center w-full py-3 transform transition-all duration-300 ease-in-out sticky -top-20 left-0", controlVisible && "top-0 ")}>
+      <div
+        className={cn(
+          'flex bg-[#e5e7eb] dark:bg-[#11131d] justify-center items-center w-full py-3 transform transition-all duration-300 ease-in-out sticky -top-20 left-0',
+          controlVisible && 'top-0 ',
+        )}
+      >
         <Control
           pageSettings={pageSettings}
           setPageSettings={setPageSettings}
@@ -56,12 +58,14 @@ export const ChapterContent = ({ data, chapter, novelID, user }: Props) => {
         <p className="whitespace-pre-line">{data.chapter_content}</p>
       </div>
 
-      <Control
-        pageSettings={pageSettings}
-        setPageSettings={setPageSettings}
-        chapterNumber={Number.parseInt(chapter)}
-        novelID={Number.parseInt(novelID)}
-      />
+      <div className="pb-4">
+        <Control
+          pageSettings={pageSettings}
+          setPageSettings={setPageSettings}
+          chapterNumber={Number.parseInt(chapter)}
+          novelID={Number.parseInt(novelID)}
+        />
+      </div>
     </>
   );
 };
@@ -69,15 +73,13 @@ export const ChapterContent = ({ data, chapter, novelID, user }: Props) => {
 const useControl = () => {
   const [showControl, setShowControl] = React.useState<boolean>(false);
   const toggleControl = () => {
-    setShowControl(show => !show);
+    setShowControl((show) => !show);
   };
-
 
   const [pageSettings, setPageSettings] = React.useState<IPageSettings>({
     fontSize: 16,
     lineHeight: 1.5,
   });
 
-
   return { controlVisible: showControl, toggleControl, pageSettings, setPageSettings };
-};  
+};
